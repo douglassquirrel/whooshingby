@@ -1,7 +1,0 @@
-Ubuntu Linux:
-  sudo apt-get install apache2
-  sudo apt-get install libapache2-mod-php5
-  sudo mkdir /var/www/whooshingby
-  sudo chmod +rw /var/www/whooshingby
-  cd /var/www/whooshingby
-  git clone git@github.com:douglassquirrel/whooshingby.git
