@@ -1,1 +1,1 @@
-<?php print "I love deadlines. I like the whooshing sound they make as they fly by." ?>
+<?php print '"I love deadlines. I like the whooshing sound they make as they fly by." - Douglas Adams' ?>
