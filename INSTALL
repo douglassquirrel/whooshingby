@@ -1,8 +1,24 @@
-Ubuntu Linux:
+UBUNTU LINUX
+
+1. Decide location and URL by setting environment variables used below...
+For a developer...
+  export WB_ROOT=~/projects/whooshingby
+  export HOST=whooshingby [also edit /etc/hosts to alias "whooshingby" to 127.0.0.1]
+For production...
+  export WB_ROOT=/opt/whooshingby
+  export HOST=whooshingby.com
+
+2. Run these commands:
   sudo apt-get install apache2
   sudo apt-get install libapache2-mod-php5
-  sudo mkdir /var/www/whooshingby
-  sudo chmod +rw /var/www/whooshingby
-  cd /var/www/whooshingby
+  sudo mkdir $WB_ROOT
+  sudo chown $USER $WB_ROOT
+  cd $WB_ROOT/..
   git clone git@github.com:douglassquirrel/whooshingby.git
-  firefox http://localhost/whooshingby
+  sed -e "s:@WB_ROOT:$WB_ROOT:g" -e "s:@HOST:$HOST:g" $WB_ROOT/install/whooshingby.conf | sudo tee /etc/apache2/sites-available/whooshingby.conf
+  sudo a2ensite whooshingby.conf
+  sudo /etc/init.d/apache2 reload
+
+3. Visit http://$HOST
+
+
