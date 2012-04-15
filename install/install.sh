@@ -22,10 +22,6 @@ log "Installing PHPUnit."
   pear upgrade-all
   pear install --alldeps phpunit/PHPUnit
 #log "Installing whooshingby." 
-#  mkdir $WB_ROOT
-#  cd $WB_ROOT/..
-#  git clone git@github.com:douglassquirrel/whooshingby.git
-#  chown -R $USER $WB_ROOT
 #  sed -e "s:@WB_ROOT:$WB_ROOT:g" -e "s:@HOST:$HOST:g" $WB_ROOT/install/whooshingby.conf | sudo tee /etc/apache2/sites-available/whooshingby.conf
 #  a2ensite whooshingby.conf
 #  /etc/init.d/apache2 reload
