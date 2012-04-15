@@ -13,8 +13,8 @@ log "Installing Apache."
 log "Installing PHP."
   apt-get -y install libapache2-mod-php5
 log "Installing PHPUnit." 
-  apt-get -y install pear
-  apt-get -y upgrade pear
+  apt-get -y install php-pear
+  apt-get -y upgrade php-pear
   pear channel-discover pear.phpunit.de
   pear channel-discover pear.symfony-project.com
   pear channel-discover components.ez.no
