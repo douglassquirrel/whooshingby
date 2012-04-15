@@ -9,12 +9,12 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 log "Installing Apache."
-  apt-get install apache2
+  apt-get -y install apache2
 log "Installing PHP."
-  apt-get install libapache2-mod-php5
+  apt-get -y install libapache2-mod-php5
 log "Installing PHPUnit." 
-  apt-get install pear
-  apt-get upgrade pear
+  apt-get -y install pear
+  apt-get -y upgrade pear
   pear channel-discover pear.phpunit.de
   pear channel-discover pear.symfony-project.com
   pear channel-discover components.ez.no
