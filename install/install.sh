@@ -3,6 +3,8 @@ log() {
 }
 
 log "Running whooshingby installation script."
+echo "WB_ROOT is ${WB_ROOT}"
+echo "HOST is ${HOST}"
 if [ "$(id -u)" != "0" ]; then
    log "!!! Must be run as root. Exiting."
    exit 1
