@@ -10,10 +10,10 @@ For production...
 
 2. Install git and get whooshingby:
   sudo apt-get install git-core
-  git clone git://github.com/douglassquirrel/whooshingby.git
+  git clone git://github.com/douglassquirrel/whooshingby.git $WB_ROOT
 
 3. Run installer:
-  sudo $WB_ROOT/install/install.sh
+  sudo WB_ROOT=$WB_ROOT HOST=$HOST $WB_ROOT/install/install.sh
 
 4. Run tests:
   cd $WB_ROOT
