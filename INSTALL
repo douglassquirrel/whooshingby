@@ -8,33 +8,17 @@ For production...
   export WB_ROOT=/opt/whooshingby
   export HOST=whooshingby.com
 
-2. Run these commands to set up apache, php, phpunit, and whooshingby:
-Apache:  
-  sudo apt-get install apache2
-PHP:
-  sudo apt-get install libapache2-mod-php5
-PHPUnit: 
-  sudo apt-get install pear
-  sudo apt-get upgrade pear
-  sudo pear channel-discover pear.phpunit.de
-  sudo pear channel-discover pear.symfony-project.com
-  sudo pear channel-discover components.ez.no
-  sudo pear update-channels
-  sudo pear upgrade-all
-  sudo pear install --alldeps phpunit/PHPUnit
-Whooshingby: 
-  sudo mkdir $WB_ROOT
-  sudo chown $USER $WB_ROOT
-  cd $WB_ROOT/..
-  git clone git@github.com:douglassquirrel/whooshingby.git
-  sed -e "s:@WB_ROOT:$WB_ROOT:g" -e "s:@HOST:$HOST:g" $WB_ROOT/install/whooshingby.conf | sudo tee /etc/apache2/sites-available/whooshingby.conf
-  sudo a2ensite whooshingby.conf
-  sudo /etc/init.d/apache2 reload
+2. Install git and get whooshingby:
+  sudo apt-get install git-core
+  git clone git://github.com/douglassquirrel/whooshingby.git
 
-3. Run tests:
+3. Run installer:
+  sudo $WB_ROOT/install/install.sh
+
+4. Run tests:
   cd $WB_ROOT
   phpunit test
 
-4. Visit http://$HOST and verify whooshingby is running
+5. Visit http://$HOST and verify whooshingby is running
 
 
