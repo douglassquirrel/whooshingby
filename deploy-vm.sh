@@ -1,4 +1,5 @@
-ssh -t $WB_USER@whooshingby-vm "sudo apt-get -y install unzip
+ssh -t $WB_USER@whooshingby-vm "sudo apt-get -y update
+sudo apt-get -y install unzip
 sudo mkdir $WB_ROOT
 sudo chown $WB_USER $WB_ROOT
 wget -O $WB_ROOT/whooshingby.zip https://github.com/douglassquirrel/whooshingby/zipball/master
