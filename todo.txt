@@ -1,1 +1,0 @@
-in deploy-vm.sh, replace whooshingby-vm with variable, check variables are set before continuing
