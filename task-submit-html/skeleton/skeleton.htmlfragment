@@ -1,0 +1,3 @@
+<section>
+  <button type="button" data-trigger>Completed task!</button>
+</section>
