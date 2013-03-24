@@ -1,21 +1,30 @@
 #!/usr/bin/python
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-from os import environ
-from sys import exit
 from httplib2 import Http
-from urllib import urlencode
 from json import dumps
+from random import randrange
+from urllib import urlencode
 
-CACHE_MAX_AGE = environ.get('CACHE_MAX_AGE')
-PORT          = int(environ.get('PORT') or None)
-FACT_URL      = environ.get('FACT_URL')
-if CACHE_MAX_AGE is None or PORT is None:
-    content = dumps({'name':'task-submit-html-skeleton', 'reason':'missing environment variables'})
-    request_body = urlencode({'type':'service-failed-to-start', 'content':content})
-    Http().request(FACT_URL, "POST", request_body, headers={'content-type':'application/x-www-form-urlencoded'})
-if CACHE_MAX_AGE is None or PORT is None or FACT_URL is None:    
-    print "Need to set CACHE_MAX_AGE, PORT and FACT_URL environment variables"
-    exit(1)
+def find_facts_service():
+    for port in range(2000, 3000):
+        url = 'http://localhost:%d' % port
+        print 'Trying %s' % url
+        try:
+            resp, content = Http().request(url)
+            if resp.status == 200 and 'Kropotkin' in content:
+                return url
+        except IOError:
+            pass
+    raise Exception('Cannot locate facts service')
+
+CACHE_MAX_AGE = 5
+
+FACT_URL      = find_facts_service()
+print "Using facts service at %s" % FACT_URL
+
+PORT = randrange(2000, 3000)
+print "Listening on port %d" % PORT
+
 with open('skeleton.htmlfragment') as f: SKELETON = f.read()
 
 class handler(BaseHTTPRequestHandler):
@@ -29,8 +38,7 @@ class handler(BaseHTTPRequestHandler):
         return
 
 content = dumps({'name':'task-submit-html-skeleton', 'port':PORT})
-request_body = urlencode({'type':'service-started', 'content':content})
-Http().request(FACT_URL, "POST", request_body, headers={'content-type':'application/x-www-form-urlencoded'})
+Http().request(FACT_URL + "/service-started", "POST", content, headers={'content-type':'application/x-www-form-urlencoded'})
 
 server = HTTPServer(('', PORT), handler)
 server.serve_forever()
