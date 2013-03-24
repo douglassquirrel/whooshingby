@@ -15,7 +15,7 @@ print "Storing facts in %s" % FACTS_LOCATION
 
 def save_fact(fact_type, content):
     tstamp = int(time())
-    name = '.'.join([fact_type, str(tstamp), 'fact'])
+    name = '.'.join([fact_type, str(tstamp), str(hash(content)), 'fact'])
     with open(path.join(FACTS_LOCATION, name), 'w') as fact_file:
         fact_file.write(content)
     

@@ -8,7 +8,6 @@ from urllib import urlencode
 def find_facts_service():
     for port in range(2000, 3000):
         url = 'http://localhost:%d' % port
-        print 'Trying %s' % url
         try:
             resp, content = Http().request(url)
             if resp.status == 200 and 'Kropotkin' in content:
@@ -30,7 +29,7 @@ with open('skeleton.htmlfragment') as f: SKELETON = f.read()
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
-        self.send_header('Cache-Control',  'max-age=' + CACHE_MAX_AGE)
+        self.send_header('Cache-Control',  'max-age=%d' % CACHE_MAX_AGE)
         self.send_header('Content-Length', len(SKELETON))
         self.send_header('Content-Type',   'text/html')
         self.end_headers()
