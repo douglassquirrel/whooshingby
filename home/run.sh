@@ -10,5 +10,4 @@ start() {
   ( cd $DIRECTORY && ./$EXECUTABLE & )
 }
 
-start facts
-start home
+start task-submit-html
