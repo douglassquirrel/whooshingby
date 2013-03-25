@@ -36,10 +36,10 @@ class handler(BaseHTTPRequestHandler):
         self.wfile.write(SKELETON)
         return
 
+url = FACT_URL + '/service-started'
 content = dumps({'name':'task-submit-html-skeleton', 'port':PORT})
-Http().request(FACT_URL + "/service-started", "POST", content, headers={'content-type':'application/x-www-form-urlencoded'})
+headers = {'content-type':'application/x-www-form-urlencoded'}
+Http().request(url, "POST", content, headers)
 
 server = HTTPServer(('', PORT), handler)
 server.serve_forever()
-
-    
