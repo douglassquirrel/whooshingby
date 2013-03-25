@@ -6,7 +6,7 @@ from os import path
 from random import randrange
 from tempfile import mkdtemp
 from time import time
-from urlparse import urlparse
+from urlparse import urlparse, parse_qsl
 
 PORT = randrange(2000, 3000)
 print "Listening on port %d" % PORT
@@ -28,12 +28,15 @@ class handler(BaseHTTPRequestHandler):
     def do_GET(self):
         parsed_url = urlparse(self.path)
         url_path = parsed_url.path
+        query_params = set(parse_qsl(parsed_url.query))
+
         if url_path == '/':
             self.give_response(200, 'Kropotkin Facts Service\n')
         else:
             fact_type = url_path.split('/')[1]
             fact_files = glob(path.join(FACTS_LOCATION, fact_type + ".*"))
             facts = [load_fact(f) for f in fact_files]
+            facts = [f for f in facts if query_params < set(f.viewitems())]
             self.give_response(200, dumps(facts), 'application/json')
 
     def do_POST(self):
