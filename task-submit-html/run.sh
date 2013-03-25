@@ -11,3 +11,4 @@ start() {
 }
 
 start skeleton
+start behaviour
