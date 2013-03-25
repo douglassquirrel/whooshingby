@@ -1,6 +1,7 @@
 #!/usr/bin/python
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
-from json import dumps
+from glob import glob
+from json import dumps, load
 from os import path
 from random import randrange
 from tempfile import mkdtemp
@@ -18,14 +19,22 @@ def save_fact(fact_type, content):
     name = '.'.join([fact_type, str(tstamp), str(hash(content)), 'fact'])
     with open(path.join(FACTS_LOCATION, name), 'w') as fact_file:
         fact_file.write(content)
-    
+
+def load_fact(fact_filename):
+    with open(fact_filename, 'r') as fact_file:
+        return load(fact_file)
+
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        url_path = urlparse(self.path).path
+        parsed_url = urlparse(self.path)
+        url_path = parsed_url.path
         if url_path == '/':
-            self.text_response(200, 'Kropotkin Facts Service\n')
+            self.give_response(200, 'Kropotkin Facts Service\n')
         else:
-            self.text_response(400, '')
+            fact_type = url_path.split('/')[1]
+            fact_files = glob(path.join(FACTS_LOCATION, fact_type + ".*"))
+            facts = [load_fact(f) for f in fact_files]
+            self.give_response(200, dumps(facts), 'application/json')
 
     def do_POST(self):
         fact_type = (urlparse(self.path).path)[1:]
@@ -34,14 +43,14 @@ class handler(BaseHTTPRequestHandler):
 
         if fact_type and content:
             save_fact(fact_type, content)
-            self.text_response(200, '')
+            self.give_response(200, '')
         else:
-            self.text_response(400, '')
-  
-    def text_response(self, response_code, text):
+            self.give_response(400, '')
+
+    def give_response(self, response_code, text, mime_type='text/plain'):
         self.send_response(response_code)
         self.send_header('Content-Length', len(text))
-        self.send_header('Content-Type', 'text/plain; charset=utf-8')
+        self.send_header('Content-Type', mime_type + '; charset=utf-8')
         self.end_headers()
         if text:
             self.wfile.write(text)
