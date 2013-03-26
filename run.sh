@@ -12,3 +12,4 @@ start() {
 
 start facts
 start home
+start rewards
