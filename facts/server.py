@@ -50,6 +50,9 @@ class handler(BaseHTTPRequestHandler):
         else:
             self.give_response(400, '')
 
+    def log_message(self, format, *args):
+        return
+
     def give_response(self, response_code, text, mime_type='text/plain'):
         self.send_response(response_code)
         self.send_header('Content-Length', len(text))

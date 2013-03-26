@@ -36,6 +36,9 @@ class handler(BaseHTTPRequestHandler):
         self.wfile.write(REWARDS)
         return
 
+    def log_message(self, format, *args):
+        return
+
 url = FACT_URL + '/service-started'
 content = dumps({'name':'rewards', 'port':PORT})
 headers = {'content-type':'application/x-www-form-urlencoded'}
