@@ -11,3 +11,4 @@ start() {
 }
 
 start task-submit-html
+python ./server.py

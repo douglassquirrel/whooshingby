@@ -2,6 +2,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from httplib2 import Http
 from json import dumps, loads
 from random import randrange
+from re import sub
 from urllib import urlencode
 
 def find_facts_service():
@@ -34,33 +35,30 @@ FACT_URL      = find_facts_service()
 print 'Using facts service at %s' % FACT_URL
 
 PORT = randrange(2000, 3000)
-print 'task-submit-html listening on port %d' % PORT
+print 'home listening on port %d' % PORT
 
-SKELETON_URL  = find_service('task-submit-html-skeleton')
-BEHAVIOUR_URL = find_service('task-submit-html-behaviour')
-print 'Skeleton URL: %s; behaviour URL: %s' % (SKELETON_URL, BEHAVIOUR_URL)
+TASK_SUBMIT_HTML_URL = find_service('task-submit-html')
+print 'task-submit-html URL: %s' % TASK_SUBMIT_HTML_URL
 
-SCRIPT_TEMPLATE = '<script type="text/javascript">\n%s\n</script>\n'
+with open('home.html') as f: HOME_HTML = f.read()
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        resp, skeleton  = Http().request(SKELETON_URL)
-        resp, behaviour = Http().request(BEHAVIOUR_URL)
+        resp, task_submit_section = Http().request(TASK_SUBMIT_HTML_URL)
 
-        fragment = SCRIPT_TEMPLATE % behaviour +\
-            skeleton.replace('data-completed-task',\
-                                 'onclick="completed_task()"')
+        html = sub('<section\s*data-task-submit>\s*</section>', \
+                       task_submit_section, HOME_HTML)
 
         self.send_response(200)
         self.send_header('Cache-Control',  'max-age=%d' % CACHE_MAX_AGE)
-        self.send_header('Content-Length', len(fragment))
+        self.send_header('Content-Length', len(html))
         self.send_header('Content-Type',   'text/html')
         self.end_headers()
-        self.wfile.write(fragment)
+        self.wfile.write(html)
         return
 
 url = FACT_URL + '/service-started'
-content = dumps({'name':'task-submit-html', 'port':PORT})
+content = dumps({'name':'home', 'port':PORT})
 headers = {'content-type':'application/x-www-form-urlencoded'}
 Http().request(url, "POST", content, headers)
 
