@@ -1,0 +1,14 @@
+<section>
+  <div data-reward style="display:none">
+    <p>You Win!</p>
+    <p>Your Reward Is: <span data-reward-name>NAME</span></p>
+  </div>
+  <div data-reward style="display:none">
+    <p>Congratulations!</p>
+    <p>You Have Earned: <span data-reward-name>NAME</span></p>
+  </div>
+  <div data-reward style="display:none">
+    <p>Great Job!</p>
+    <p>Collect Your <span data-reward-name>NAME</span></p>
+  </div>
+</section>

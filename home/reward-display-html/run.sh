@@ -10,6 +10,6 @@ start() {
   ( cd $DIRECTORY && ./$EXECUTABLE & )
 }
 
-start task-submit-html
-start reward-display-html
-python ./server.py
+start skeleton
+#start behaviour
+#python ./server.py
