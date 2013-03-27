@@ -2,7 +2,7 @@
 from httplib2 import Http
 from json import dumps, loads
 from random import randrange
-from time import sleep
+from time import sleep, time
 
 def find_facts_service():
     for port in range(2000, 3000):
@@ -57,7 +57,7 @@ while True:
         for reward in loads(rewards_json):
             if r in range(n, n + reward['percentage']):
                 url = FACT_URL + '/reward'
-                content = dumps({'name': reward['name']})
+                content = dumps({'name': reward['name'], 'time': int(time())})
                 headers = {'content-type':'application/x-www-form-urlencoded'}
                 Http().request(url, "POST", content, headers)
             n = n + reward['percentage']
