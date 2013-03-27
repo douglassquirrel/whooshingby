@@ -55,6 +55,7 @@ class handler(BaseHTTPRequestHandler):
 
     def give_response(self, response_code, text, mime_type='text/plain'):
         self.send_response(response_code)
+        self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Content-Length', len(text))
         self.send_header('Content-Type', mime_type + '; charset=utf-8')
         self.end_headers()

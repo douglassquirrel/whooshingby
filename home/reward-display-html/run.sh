@@ -12,4 +12,4 @@ start() {
 
 start skeleton
 start behaviour
-#python ./server.py
+python ./server.py
