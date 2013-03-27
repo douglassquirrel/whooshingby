@@ -47,9 +47,7 @@ class handler(BaseHTTPRequestHandler):
         resp, skeleton  = Http().request(SKELETON_URL)
         resp, behaviour = Http().request(BEHAVIOUR_URL)
 
-        fragment = SCRIPT_TEMPLATE % behaviour +\
-            skeleton.replace('data-completed-task',\
-                                 'onclick="completed_task()"')
+        fragment = SCRIPT_TEMPLATE % behaviour + skeleton
 
         self.send_response(200)
         self.send_header('Cache-Control',  'max-age=%d' % CACHE_MAX_AGE)

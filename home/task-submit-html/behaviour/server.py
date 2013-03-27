@@ -16,6 +16,9 @@ def find_facts_service():
             pass
     raise Exception('Cannot locate facts service')
 
+def add_js_var(name, value, javascript):
+    return "var %s = '%s';\n%s" % (name, value, javascript)
+
 CACHE_MAX_AGE = 5
 
 FACT_URL      = find_facts_service()
@@ -25,11 +28,13 @@ PORT = randrange(2000, 3000)
 print "Listening on port %d" % PORT
 
 with open('completed_task.js') as f: BEHAVIOUR = f.read()
-BEHAVIOUR = BEHAVIOUR.replace('FACT_URL', FACT_URL)
+BEHAVIOUR = add_js_var("FACT_URL", FACT_URL, BEHAVIOUR)
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        behaviour = BEHAVIOUR.replace('CLIENT_ADDRESS', self.client_address[0])
+        client_address = self.client_address[0]
+        behaviour = add_js_var("CLIENT_ADDRESS", client_address, BEHAVIOUR)
+
         self.send_response(200)
         self.send_header('Cache-Control',  'max-age=%d' % CACHE_MAX_AGE)
         self.send_header('Content-Length', len(behaviour))

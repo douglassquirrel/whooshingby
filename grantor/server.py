@@ -48,7 +48,6 @@ while True:
     facts = loads(content)
     if len(facts) > completed_tasks:
         completed_tasks = len(facts)
-        print "Checking reward"
         resp, rewards_json = Http().request(REWARDS_URL)
         if resp.status != 200:
             raise Exception('Unable to get rewards')
