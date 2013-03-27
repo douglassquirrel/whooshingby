@@ -11,5 +11,5 @@ start() {
 }
 
 start skeleton
-#start behaviour
+start behaviour
 #python ./server.py
