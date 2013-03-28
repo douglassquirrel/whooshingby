@@ -27,10 +27,15 @@ function compare_rewards(r, s) {
 function display_reward(name)
 {
   reward_elts = document.querySelectorAll('*[data-reward]');
+  hidden_elts = []
   for (i=0; i<reward_elts.length; i++) {
-    reward_elts[i].style.display = 'none';
+      if (reward_elts[i].style.display != 'none') {
+        reward_elts[i].style.display = 'none';
+      } else {
+        hidden_elts.push(reward_elts[i]);
+      }
   }
-  chosen_element = reward_elts[Math.floor(Math.random() * reward_elts.length)];
+  chosen_element = hidden_elts[Math.floor(Math.random() * hidden_elts.length)];
   chosen_element.style.display = 'block';
   name_elts = chosen_element.querySelectorAll('*[data-reward-name]');
   for (i=0; i<name_elts.length; i++) {
