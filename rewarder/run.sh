@@ -10,6 +10,5 @@ start() {
   ( cd $DIRECTORY && ./$EXECUTABLE & )
 }
 
-start facts
-start home
-start rewarder
+start rewards
+start grantor
