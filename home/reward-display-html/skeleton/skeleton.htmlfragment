@@ -1,13 +1,26 @@
 <section>
-  <div data-reward style="display:none">
+  <style type="text/css" scoped>
+    div {
+      width:200px;
+      -webkit-animation:highlight 2s;
+      -webkit-animation-iteration-count:2;
+      -webkit-animation-direction:alternate;
+    }
+    @-webkit-keyframes highlight {
+      from {background:white;}
+      to {background:yellow;}
+    }
+  </style>
+
+  <div data-reward style="display:none;">
     <p>You Win!</p>
     <p>Your Reward Is: <span data-reward-name>NAME</span></p>
   </div>
-  <div data-reward style="display:none">
+  <div data-reward style="display:none;">
     <p>Congratulations!</p>
     <p>You Have Earned: <span data-reward-name>NAME</span></p>
   </div>
-  <div data-reward style="display:none">
+  <div data-reward style="display:none;">
     <p>Great Job!</p>
     <p>Collect Your <span data-reward-name>NAME</span></p>
   </div>
