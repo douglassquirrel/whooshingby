@@ -1,4 +1,5 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+from httplib import BadStatusLine
 from httplib2 import Http
 from json import dumps, loads
 from random import randrange
@@ -12,6 +13,8 @@ def find_facts_service():
             if resp.status == 200 and 'Kropotkin' in content:
                 return url
         except IOError:
+            pass
+        except BadStatusLine:
             pass
     raise Exception('Cannot locate facts service')
 
