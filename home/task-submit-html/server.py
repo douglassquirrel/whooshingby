@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from httplib import BadStatusLine
 from httplib2 import Http
