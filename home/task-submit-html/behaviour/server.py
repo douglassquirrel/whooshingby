@@ -3,6 +3,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from httplib import BadStatusLine
 from httplib2 import Http
 from json import dumps
+from kropotkin import store_fact
 from random import randrange
 from urllib import urlencode
 
@@ -28,7 +29,7 @@ FACT_URL      = find_facts_service()
 print "Using facts service at %s" % FACT_URL
 
 PORT = randrange(2000, 3000)
-print "Listening on port %d" % PORT
+print "task-submit-html-behaviour listening on port %d" % PORT
 
 with open('completed_task.js') as f: BEHAVIOUR = f.read()
 BEHAVIOUR = add_js_var("FACT_URL", FACT_URL, BEHAVIOUR)
@@ -48,11 +49,8 @@ class handler(BaseHTTPRequestHandler):
 
     def log_message(self, format, *args):
         return
-
-url = FACT_URL + '/service-started'
 content = dumps({'name':'task-submit-html-behaviour', 'port':PORT})
-headers = {'content-type':'application/x-www-form-urlencoded'}
-Http().request(url, "POST", content, headers)
+store_fact(FACT_URL, 'service-started', content)
 
 server = HTTPServer(('', PORT), handler)
 server.serve_forever()

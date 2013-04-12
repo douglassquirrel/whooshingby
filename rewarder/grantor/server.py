@@ -2,6 +2,7 @@
 from httplib import BadStatusLine
 from httplib2 import Http
 from json import dumps, loads
+from kropotkin import store_fact
 from random import randrange
 from time import sleep, time
 
@@ -37,10 +38,7 @@ print 'Using facts service at %s' % FACT_URL
 REWARDS_URL = find_service('rewards')
 print 'Rewards URL: %s' % REWARDS_URL
 
-url = FACT_URL + '/service-started'
-content = dumps({'name':'grantor'})
-headers = {'content-type':'application/x-www-form-urlencoded'}
-Http().request(url, "POST", content, headers)
+store_fact(FACT_URL, 'service-started', dumps({'name':'grantor'}))
 
 completed_tasks = 0
 while True:
@@ -59,8 +57,6 @@ while True:
         n = 0
         for reward in loads(rewards_json):
             if r in range(n, n + reward['percentage']):
-                url = FACT_URL + '/reward'
                 content = dumps({'name': reward['name'], 'time': int(time())})
-                headers = {'content-type':'application/x-www-form-urlencoded'}
-                Http().request(url, "POST", content, headers)
+                store_fact(FACT_URL, 'reward', content)
             n = n + reward['percentage']

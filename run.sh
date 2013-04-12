@@ -10,6 +10,6 @@ start() {
   ( cd $DIRECTORY && ./$EXECUTABLE & )
 }
 
-start facts
+#./start_kropotkin.py
 start home
 start rewarder

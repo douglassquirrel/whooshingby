@@ -2,6 +2,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from httplib import BadStatusLine
 from httplib2 import Http
 from json import dumps, loads
+from kropotkin import store_fact
 from random import randrange
 from urllib import urlencode
 
@@ -63,10 +64,8 @@ class handler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         return
 
-url = FACT_URL + '/service-started'
 content = dumps({'name':'task-submit-html', 'port':PORT})
-headers = {'content-type':'application/x-www-form-urlencoded'}
-Http().request(url, "POST", content, headers)
+store_fact(FACT_URL, 'service-started', content)
 
 server = HTTPServer(('', PORT), handler)
 server.serve_forever()
