@@ -6,19 +6,7 @@ from json import dumps, loads
 from kropotkin import store_fact
 from random import randrange
 from re import sub
-
-def find_facts_service():
-    for port in range(2000, 3000):
-        url = 'http://localhost:%d' % port
-        try:
-            resp, content = Http().request(url)
-            if resp.status == 200 and 'Kropotkin' in content:
-                return url
-        except IOError:
-            pass
-        except BadStatusLine:
-            pass
-    raise Exception('Cannot locate facts service')
+from os import environ
 
 def find_service(service_name):
     for i in range(10000):
@@ -35,8 +23,8 @@ def find_service(service_name):
 
 CACHE_MAX_AGE = 5
 
-FACT_URL      = find_facts_service()
-print 'Using facts service at %s' % FACT_URL
+FACT_URL      = environ['KROPOTKIN_URL'] # wrong - should use own factspace
+print 'Using fact service at %s' % FACT_URL
 
 PORT = randrange(2000, 3000)
 print 'home listening on port %d' % PORT

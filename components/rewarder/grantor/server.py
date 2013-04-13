@@ -3,21 +3,9 @@ from httplib import BadStatusLine
 from httplib2 import Http
 from json import dumps, loads
 from kropotkin import store_fact
+from os import environ
 from random import randrange
 from time import sleep, time
-
-def find_facts_service():
-    for port in range(2000, 3000):
-        url = 'http://localhost:%d' % port
-        try:
-            resp, content = Http().request(url)
-            if resp.status == 200 and 'Kropotkin' in content:
-                return url
-        except IOError:
-            pass
-        except BadStatusLine:
-            pass
-    raise Exception('Cannot locate facts service')
 
 def find_service(service_name):
     for i in range(10000):
@@ -32,7 +20,7 @@ def find_service(service_name):
             pass
     raise Exception('Cannot locate %s' % service_name)
 
-FACT_URL      = find_facts_service()
+FACT_URL = environ['KROPOTKIN_URL'] # wrong - should use own factspace
 print 'Using facts service at %s' % FACT_URL
 
 REWARDS_URL = find_service('rewards')
