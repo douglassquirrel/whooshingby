@@ -2,28 +2,23 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from httplib import BadStatusLine
 from httplib2 import Http
-from json import dumps, loads
-from kropotkin import store_fact
+from json import dumps
+from kropotkin import store_fact, get_newest_fact
 from random import randrange
 from re import sub
 from os import environ
 
 def find_service(service_name):
+    criteria = {'name': service_name}
     for i in range(10000):
-        url = '%s/service-started?name=%s' % (FACT_URL, service_name)
-        try:
-            resp, content = Http().request(url)
-            if resp.status == 200:
-                facts = loads(content)
-                if len(facts) > 0:
-                    return 'http://localhost:%d' % loads(content)[0]['port']
-        except IOError:
-            pass
-    raise Exception('Cannot locate %s' % service_name)
+        fact = get_newest_fact(FACT_URL, 'service-started', criteria)
+        if fact:
+            return 'http://localhost:%d' % fact['port']
+    raise Exception("Cannot locate service %s" % service_name)
 
 CACHE_MAX_AGE = 5
 
-FACT_URL      = environ['KROPOTKIN_URL'] # wrong - should use own factspace
+FACT_URL = environ['KROPOTKIN_URL'] # wrong - should use own factspace
 print 'Using fact service at %s' % FACT_URL
 
 PORT = randrange(2000, 3000)
