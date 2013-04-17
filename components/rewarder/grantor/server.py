@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from httplib import BadStatusLine
 from httplib2 import Http
-from json import dumps, loads
+from json import loads
 from kropotkin import store_fact
 from os import environ
 from random import randrange
@@ -26,7 +26,7 @@ print 'Using facts service at %s' % FACT_URL
 REWARDS_URL = find_service('rewards')
 print 'Rewards URL: %s' % REWARDS_URL
 
-store_fact(FACT_URL, 'service-started', dumps({'name':'grantor'}))
+store_fact(FACT_URL, 'service-started', {'name':'grantor'})
 
 completed_tasks = 0
 while True:
@@ -45,6 +45,6 @@ while True:
         n = 0
         for reward in loads(rewards_json):
             if r in range(n, n + reward['percentage']):
-                content = dumps({'name': reward['name'], 'time': int(time())})
+                content = {'name': reward['name'], 'time': int(time())}
                 store_fact(FACT_URL, 'reward', content)
             n = n + reward['percentage']

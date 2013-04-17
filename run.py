@@ -12,5 +12,5 @@ except KeyError:
     print "Must set environment variable KROPOTKIN_URL"
     exit(1)
 
-content = dumps({'time': int(time()), 'directory': abspath('components')})
+content = {'time': int(time()), 'directory': abspath('components')}
 store_fact(KROPOTKIN_URL, 'deploy', content)

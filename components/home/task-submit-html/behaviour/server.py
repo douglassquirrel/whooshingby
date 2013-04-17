@@ -2,7 +2,6 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from httplib import BadStatusLine
 from httplib2 import Http
-from json import dumps
 from kropotkin import store_fact
 from random import randrange
 from os import environ
@@ -37,7 +36,7 @@ class handler(BaseHTTPRequestHandler):
 
     def log_message(self, format, *args):
         return
-content = dumps({'name':'task-submit-html-behaviour', 'port':PORT})
+content = {'name':'task-submit-html-behaviour', 'port':PORT}
 store_fact(FACT_URL, 'service-started', content)
 
 server = HTTPServer(('', PORT), handler)
