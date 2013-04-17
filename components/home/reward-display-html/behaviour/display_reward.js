@@ -1,27 +1,20 @@
-rewards = [];
-
 function check_reward() {
   xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
     if (xmlhttp.readyState == 4) {
       server_rewards = JSON.parse(xmlhttp.responseText);
-      server_rewards.sort(compare_rewards);
-        if (server_rewards.length > rewards.length) {
-          latest_reward = server_rewards.slice(-1)[0]
-          display_reward(latest_reward['name']);
-        }
-      rewards = server_rewards;
+      if (server_rewards.length > 0) {
+        display_reward(server_rewards[0]['name']);
+      }
     }
   }
-  xmlhttp.open("GET", FACT_URL + '/reward', true);
-  xmlhttp.send();
-}
 
-function compare_rewards(r, s) {
-  if      (r['time'] != s['time']) { return r['time'] - s['time']; }
-  else if (r['name'] < s['name'])  { return -1; }
-  else if (r['name'] > s['name'])  { return 1;  }
-  else                             { return 0; }
+  /* Need to add a unique id here */
+  query_string = 'kropotkin_criteria=stamp-display_reward.3141,result-oldest';
+  url = FACT_URL + '/reward?' + query_string;
+
+  xmlhttp.open("GET", url, true);
+  xmlhttp.send();
 }
 
 function display_reward(name)
@@ -43,4 +36,4 @@ function display_reward(name)
   }
 }
 
-setInterval(check_reward, 1000);
+setInterval(check_reward, 200);
