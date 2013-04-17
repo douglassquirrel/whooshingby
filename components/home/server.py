@@ -8,11 +8,9 @@ from re import sub
 from os import environ
 
 def find_service(service_name):
-    criteria = {'name': service_name}
-    for i in range(10000):
-        fact = get_newest_fact(FACT_URL, 'service-started', criteria)
-        if fact:
-            return 'http://localhost:%d' % fact['port']
+    fact = get_newest_fact(FACT_URL, 'service-started', {'name': service_name})
+    if fact:
+        return 'http://localhost:%d' % fact['port']
     raise Exception("Cannot locate service %s" % service_name)
 
 CACHE_MAX_AGE = 5
