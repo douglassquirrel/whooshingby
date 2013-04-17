@@ -2,8 +2,8 @@
 from httplib import BadStatusLine
 from httplib2 import Http
 from json import loads
-from kropotkin import get_newest_fact, store_fact
-from os import environ
+from kropotkin import get_newest_fact, get_oldest_fact_and_stamp, store_fact
+from os import environ, getpid
 from random import randrange
 from time import sleep, time
 
@@ -15,18 +15,13 @@ def find_service(service_name):
 
 FACT_URL = environ['KROPOTKIN_URL'] # wrong - should use own factspace
 REWARDS_URL = find_service('rewards')
+STAMP = 'grantor.%d' % getpid()
 
 store_fact(FACT_URL, 'service-started', {'name':'grantor'})
 
-completed_tasks = 0
 while True:
-    sleep(1)
-    resp, content = Http().request(FACT_URL + '/completed-task')
-    if resp.status != 200:
-        raise Exception('Unable to check facts service')
-    facts = loads(content)
-    if len(facts) > completed_tasks:
-        completed_tasks = len(facts)
+    fact = get_oldest_fact_and_stamp(FACT_URL, 'completed-task', {}, STAMP)
+    if fact:
         resp, rewards_json = Http().request(REWARDS_URL)
         if resp.status != 200:
             raise Exception('Unable to get rewards')
