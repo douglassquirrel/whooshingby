@@ -10,11 +10,7 @@ from urllib import urlencode
 CACHE_MAX_AGE = 5
 
 FACT_URL = environ['KROPOTKIN_URL'] # wrong - should use own factspace
-print "Using facts service at %s" % FACT_URL
-
 PORT = randrange(2000, 3000)
-print "rewards listening on port %d" % PORT
-
 with open('rewards.json') as f: REWARDS = f.read()
 
 class handler(BaseHTTPRequestHandler):

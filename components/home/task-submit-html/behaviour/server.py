@@ -13,11 +13,7 @@ def add_js_var(name, value, javascript):
 CACHE_MAX_AGE = 5
 
 FACT_URL = environ['KROPOTKIN_URL'] # wrong - should use own factspace
-print "Using facts service at %s" % FACT_URL
-
 PORT = randrange(2000, 3000)
-print "task-submit-html-behaviour listening on port %d" % PORT
-
 with open('completed_task.js') as f: BEHAVIOUR = f.read()
 BEHAVIOUR = add_js_var("FACT_URL", FACT_URL, BEHAVIOUR)
 

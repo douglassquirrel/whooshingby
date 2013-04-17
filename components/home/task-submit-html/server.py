@@ -3,35 +3,24 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from httplib import BadStatusLine
 from httplib2 import Http
 from json import loads
-from kropotkin import store_fact
+from kropotkin import get_newest_fact, store_fact
 from os import environ
 from random import randrange
 from urllib import urlencode
 
 def find_service(service_name):
-    for i in range(10000):
-        url = '%s/service-started?name=%s' % (FACT_URL, service_name)
-        try:
-            resp, content = Http().request(url)
-            if resp.status == 200:
-                facts = loads(content)
-                if len(facts) > 0:
-                    return 'http://localhost:%d' % loads(content)[0]['port']
-        except IOError:
-            pass
-    raise Exception('Cannot locate %s' % service_name)
+    fact = get_newest_fact(FACT_URL, 'service-started', {'name': service_name})
+    if fact:
+        return 'http://localhost:%d' % fact['port']
+    raise Exception("Cannot locate service %s" % service_name)
 
 CACHE_MAX_AGE = 5
 
 FACT_URL      = environ['KROPOTKIN_URL'] # wrong - should use own factspace
-print 'Using facts service at %s' % FACT_URL
-
 PORT = randrange(2000, 3000)
-print 'task-submit-html listening on port %d' % PORT
 
 SKELETON_URL  = find_service('task-submit-html-skeleton')
 BEHAVIOUR_URL = find_service('task-submit-html-behaviour')
-print 'Skeleton URL: %s; behaviour URL: %s' % (SKELETON_URL, BEHAVIOUR_URL)
 
 SCRIPT_TEMPLATE = '<script type="text/javascript">\n%s\n</script>\n'
 

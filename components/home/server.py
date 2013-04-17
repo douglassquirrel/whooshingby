@@ -16,16 +16,12 @@ def find_service(service_name):
 CACHE_MAX_AGE = 5
 
 FACT_URL = environ['KROPOTKIN_URL'] # wrong - should use own factspace
-print 'Using fact service at %s' % FACT_URL
 
 PORT = randrange(2000, 3000)
 print 'home listening on port %d' % PORT
 
 TASK_SUBMIT_HTML_URL = find_service('task-submit-html')
-print 'task-submit-html URL: %s' % TASK_SUBMIT_HTML_URL
-
 REWARD_DISPLAY_HTML_URL = find_service('reward-display-html')
-print 'reward-display-html URL: %s' % REWARD_DISPLAY_HTML_URL
 
 with open('home.html') as f: HOME_HTML = f.read()
 

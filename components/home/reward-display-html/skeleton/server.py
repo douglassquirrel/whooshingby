@@ -9,11 +9,7 @@ from random import randrange
 CACHE_MAX_AGE = 5
 
 FACT_URL = environ['KROPOTKIN_URL'] # wrong - should use own factspace
-print "Using facts service at %s" % FACT_URL
-
 PORT = randrange(2000, 3000)
-print "reward-display-html-skeleton listening on port %d" % PORT
-
 with open('skeleton.htmlfragment') as f: SKELETON = f.read()
 
 class handler(BaseHTTPRequestHandler):
