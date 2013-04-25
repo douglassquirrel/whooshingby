@@ -1,8 +1,10 @@
 function check_reward() {
-  xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-    if (xmlhttp.readyState == 4) {
-      server_rewards = JSON.parse(xmlhttp.responseText);
+  reward_xmlhttp = new XMLHttpRequest();
+  reward_xmlhttp.onreadystatechange = function() {
+    if (reward_xmlhttp.readyState != 4) { return; }
+
+    if (reward_xmlhttp.responseText.length > 0) {
+      server_rewards = JSON.parse(reward_xmlhttp.responseText);
       if (server_rewards.length > 0) {
         display_reward(server_rewards[0]['name']);
       }
@@ -13,8 +15,8 @@ function check_reward() {
   query_string = 'kropotkin_criteria=stamp-display_reward.3141,result-oldest';
   url = FACT_URL + '/reward?' + query_string;
 
-  xmlhttp.open("GET", url, true);
-  xmlhttp.send();
+  reward_xmlhttp.open("GET", url, true);
+  reward_xmlhttp.send();
 }
 
 function display_reward(name)
@@ -36,4 +38,4 @@ function display_reward(name)
   }
 }
 
-setInterval(check_reward, 200);
+setInterval(check_reward, 1000);

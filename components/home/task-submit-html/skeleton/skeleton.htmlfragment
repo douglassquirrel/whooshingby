@@ -1,6 +1,0 @@
-<script type="text/javascript">
-  if (typeof completed_task != 'function') completed_task = function(){};
-</script>
-<section>
-  <button type="button" onclick="completed_task()">Completed task!</button>
-</section>
