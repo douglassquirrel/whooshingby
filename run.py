@@ -13,4 +13,4 @@ except KeyError:
     exit(1)
 
 content = {'time': int(time()), 'directory': abspath('components')}
-store_fact(KROPOTKIN_URL, 'deploy', content)
+store_fact(KROPOTKIN_URL, 'component_available', content)
