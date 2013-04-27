@@ -1,8 +1,7 @@
 #!/usr/bin/python
 from kropotkin import store_fact
-from json import dumps
-from os import environ
-from os.path import abspath
+from os import environ, walk
+from os.path import abspath, join
 from sys import exit
 from time import time
 
@@ -12,5 +11,7 @@ except KeyError:
     print "Must set environment variable KROPOTKIN_URL"
     exit(1)
 
-content = {'time': int(time()), 'directory': abspath('components')}
-store_fact(KROPOTKIN_URL, 'component_available', content)
+for root, dirs, files in walk('components'):
+    for d in dirs:
+        content = {'directory': abspath(join(root, d))}
+        store_fact(KROPOTKIN_URL, 'component_available', content)
