@@ -13,7 +13,7 @@ function check_reward() {
 
   /* Need to add a unique id here */
   query_string = 'kropotkin_criteria=stamp-display_reward.3141,result-oldest';
-  url = FACT_URL + '/reward?' + query_string;
+  url = FACT_URL + '/factspace/kropotkin/reward?' + query_string;
 
   reward_xmlhttp.open("GET", url, true);
   reward_xmlhttp.send();

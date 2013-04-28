@@ -3,13 +3,11 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from httplib import BadStatusLine
 from httplib2 import Http
 from kropotkin import store_fact
-from os import environ
 from random import randrange
 from urllib import urlencode
 
 CACHE_MAX_AGE = 5
 
-FACT_URL = environ['KROPOTKIN_URL'] # wrong - should use own factspace
 PORT = randrange(2000, 3000)
 with open('rewards.json') as f: REWARDS = f.read()
 
@@ -26,7 +24,7 @@ class handler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         return
 
-store_fact(FACT_URL, 'service-started', {'name':'rewards', 'port':PORT})
+store_fact('kropotkin', 'service-started', {'name':'rewards', 'port':PORT})
 
 server = HTTPServer(('', PORT), handler)
 server.serve_forever()
