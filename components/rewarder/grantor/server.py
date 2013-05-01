@@ -8,7 +8,7 @@ from random import randrange
 from time import sleep, time
 
 def find_service(service_name):
-    fact = get_newest_fact('kropotkin', 'service-started',
+    fact = get_newest_fact('whooshingby', 'service-started',
                            {'name': service_name})
     if fact:
         return 'http://localhost:%d' % fact['port']
@@ -17,10 +17,10 @@ def find_service(service_name):
 REWARDS_URL = find_service('rewards')
 STAMP = 'grantor.%d' % getpid()
 
-store_fact('kropotkin', 'service-started', {'name':'grantor'})
+store_fact('whooshingby', 'service-started', {'name':'grantor'})
 
 while True:
-    fact = get_oldest_fact_and_stamp('kropotkin', 'completed-task', {}, STAMP)
+    fact = get_oldest_fact_and_stamp('whooshingby', 'completed-task', {}, STAMP)
     if fact:
         resp, rewards_json = Http().request(REWARDS_URL)
         if resp.status != 200:
@@ -31,5 +31,5 @@ while True:
         for reward in loads(rewards_json):
             if r in range(n, n + reward['percentage']):
                 content = {'name': reward['name'], 'time': int(time())}
-                store_fact('kropotkin', 'reward', content)
+                store_fact('whooshingby', 'reward', content)
             n = n + reward['percentage']

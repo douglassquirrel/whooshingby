@@ -24,7 +24,7 @@ class handler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         return
 
-store_fact('kropotkin', 'service-started', {'name':'rewards', 'port':PORT})
+store_fact('whooshingby', 'service-started', {'name':'rewards', 'port':PORT})
 
 server = HTTPServer(('', PORT), handler)
 server.serve_forever()
