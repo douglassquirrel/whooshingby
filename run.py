@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from kropotkin import store_fact
+from kropotkin import create_factspace, store_fact
 from os import environ, walk
 from os.path import abspath, join
 from sys import exit
@@ -7,6 +7,10 @@ from sys import exit
 if 'KROPOTKIN_URL' not in environ:
     print "Must set environment variable KROPOTKIN_URL"
     exit(1)
+
+if not create_factspace('whooshingby'):
+    print "Failed to create whooshingby factspace"
+    exit(2)
 
 for root, dirs, files in walk('components'):
     for d in dirs:
