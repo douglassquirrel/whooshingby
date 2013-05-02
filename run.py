@@ -22,9 +22,13 @@ elements = [{'type': 'service-started',
               'keys': ['name', 'time'],
               'translation': 'Reward %(name)s granted at %(time)s'}]
 for e in elements:
-    store_fact('whooshingby', 'constitution_element', e)
+    if not store_fact('whooshingby', 'constitution_element', e):
+        print "Could not store constitution element fact"
+        exit(1)
 
 for root, dirs, files in walk('components'):
     for d in dirs:
         content = {'directory': abspath(join(root, d))}
-        store_fact('kropotkin', 'component_available', content)
+        if not store_fact('kropotkin', 'component_available', content):
+            print "Could not store component available fact"
+            exit(1)

@@ -29,5 +29,6 @@ while True:
         for reward in loads(rewards_json):
             if r in range(n, n + reward['percentage']):
                 content = {'name': reward['name'], 'time': int(time())}
-                store_fact('whooshingby', 'reward', content)
+                if not store_fact('whooshingby', 'reward', content):
+                    print "Could not store reward fact" # handle better
             n = n + reward['percentage']
