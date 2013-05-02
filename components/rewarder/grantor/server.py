@@ -17,8 +17,6 @@ def find_service(service_name):
 REWARDS_URL = find_service('rewards')
 STAMP = 'grantor.%d' % getpid()
 
-store_fact('whooshingby', 'service-started', {'name':'grantor'})
-
 while True:
     fact = get_oldest_fact_and_stamp('whooshingby', 'completed-task', {}, STAMP)
     if fact:
