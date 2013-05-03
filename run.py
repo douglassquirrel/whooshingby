@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from json import load
 from kropotkin import create_factspace, store_fact
 from os import environ, walk
 from os.path import abspath, join
@@ -12,18 +13,26 @@ if not create_factspace('whooshingby'):
     print "Failed to create whooshingby factspace"
     exit(2)
 
-elements = [{'type': 'service-started',
-              'keys': ['name', 'port'],
-              'translation': 'Service %(name)s on port %(port)s'},
-            {'type': 'completed-task',
-              'keys': ['client_address'],
-              'translation': 'Task completion reported'},
+elements = [{'type': 'completed-task',
+             'keys': ['client_address'],
+             'translation': 'Task completion reported'},
             {'type': 'reward',
-              'keys': ['name', 'time'],
-              'translation': 'Reward %(name)s granted at %(time)s'}]
+             'keys': ['name', 'time'],
+             'translation': 'Reward %(name)s granted at %(time)s'},
+            {'type': 'reward_percentage',
+             'keys': ['name', 'percentage'],
+             'translation': 'Reward %(name)s given percentage %(percentage)s'}]
+
 for e in elements:
     if not store_fact('whooshingby', 'constitution_element', e):
         print "Could not store constitution element fact"
+        exit(1)
+
+with open('rewards.json') as f:
+    rewards = load(f)
+for reward in rewards:
+    if not store_fact('whooshingby', 'reward_percentage', reward):
+        print "Could not store reward percentage"
         exit(1)
 
 for root, dirs, files in walk('components'):
