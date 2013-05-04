@@ -15,7 +15,7 @@ while True:
                                        'reward_percentage',
                                        {})
 
-    r = randrange(100)
+    r = (hash(fact['name']) * 61 + fact['time'] * 47) % 100
     n = 0
     for reward in reward_percentages:
         if r not in range(n, n + reward['percentage']):
