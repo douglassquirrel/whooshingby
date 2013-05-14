@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from json import load
 from kropotkin import create_factspace, store_fact
-from os import environ, walk
+from os import environ, listdir
 from os.path import abspath, join
 from sys import exit
 
@@ -35,9 +35,8 @@ for reward in rewards:
         print "Could not store reward percentage"
         exit(1)
 
-for root, dirs, files in walk('components'):
-    for d in dirs:
-        content = {'directory': abspath(join(root, d))}
-        if not store_fact('kropotkin', 'component_available', content):
-            print "Could not store component available fact"
-            exit(1)
+for f in listdir('components'):
+    content = {'location': abspath(join('components', f))}
+    if not store_fact('kropotkin', 'component_available', content):
+        print "Could not store component available fact"
+        exit(1)
