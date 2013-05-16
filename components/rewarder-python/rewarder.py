@@ -4,7 +4,7 @@ from os import getpid
 from random import randrange
 from time import sleep, time
 
-STAMP = 'grantor.%d' % getpid()
+STAMP = 'rewarder.%d' % getpid()
 
 while True:
     fact = get_oldest_fact_and_stamp('whooshingby', 'completed-task', {}, STAMP)
