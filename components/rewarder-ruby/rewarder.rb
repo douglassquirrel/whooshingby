@@ -1,10 +1,9 @@
 #!/usr/bin/ruby
 require 'kropotkin'
 
-STAMP = 'rewarderruby.%d' % Process.pid
-
 while true
-  fact = get_oldest_fact_and_stamp('whooshingby', 'completed-task', {}, STAMP)
+  fact = get_oldest_fact_and_stamp('whooshingby', 'completed-task',
+                                   {}, 'rewarder_ruby')
   if !fact
     next
   end
@@ -17,12 +16,14 @@ while true
   n = 0
   for reward in reward_percentages
     if !((n...n+reward['percentage']).include?(r))
+      n = n + reward['percentage']
       next
     end
+
     content = {'name' => reward['name'], 'time' => Time.now.to_i}
     if !(store_opinion('whooshingby', 'reward', content))
       print "Could not store reward opinion"
     end
-    n = n + reward['percentage']
+    break
   end
 end

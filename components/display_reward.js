@@ -1,6 +1,6 @@
 function check_reward() {
     get_oldest_fact_and_stamp('whooshingby', 'reward', [],
-                              'display_reward.3141', display_reward);
+                              'display_reward', display_reward);
 }
 
 function display_reward(fact)

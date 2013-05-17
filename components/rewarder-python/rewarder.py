@@ -4,10 +4,9 @@ from os import getpid
 from random import randrange
 from time import sleep, time
 
-STAMP = 'rewarder.%d' % getpid()
-
 while True:
-    fact = get_oldest_fact_and_stamp('whooshingby', 'completed-task', {}, STAMP)
+    fact = get_oldest_fact_and_stamp('whooshingby', 'completed-task',
+                                     {}, 'rewarder_python')
     if not fact:
         continue
 
@@ -19,8 +18,9 @@ while True:
     n = 0
     for reward in reward_percentages:
         if r not in range(n, n + reward['percentage']):
+            n = n + reward['percentage']
             continue
         content = {'name': reward['name'], 'time': int(time())}
         if not store_fact('whooshingby', 'reward', content):
             print "Could not store reward fact" # handle better
-        n = n + reward['percentage']
+        break
