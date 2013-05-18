@@ -1,8 +1,5 @@
 #!/usr/bin/python
 from kropotkin import get_all_facts, get_oldest_fact_and_stamp, store_fact
-from os import getpid
-from random import randrange
-from time import sleep, time
 
 while True:
     fact = get_oldest_fact_and_stamp('whooshingby', 'completed-task',
@@ -20,7 +17,8 @@ while True:
         if r not in range(n, n + reward['percentage']):
             n = n + reward['percentage']
             continue
-        content = {'name': reward['name'], 'time': int(time())}
+        content = {'name': reward['name'], 'task_id': fact['kropotkin_id'],
+                   'source': 'python'}
         if not store_fact('whooshingby', 'reward', content):
             print "Could not store reward fact" # handle better
         break

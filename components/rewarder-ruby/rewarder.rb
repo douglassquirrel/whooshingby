@@ -20,7 +20,8 @@ while true
       next
     end
 
-    content = {'name' => reward['name'], 'time' => Time.now.to_i}
+    content = {'name' => reward['name'], 'task_id' => fact['kropotkin_id'], \
+               'source' => 'ruby'}
     if !(store_opinion('whooshingby', 'reward', content))
       print "Could not store reward opinion"
     end
