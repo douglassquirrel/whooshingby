@@ -14,7 +14,7 @@ if not create_factspace('whooshingby'):
     exit(2)
 
 elements = [{'type': 'completed-task',
-             'keys': ['name', 'time'],
+             'keys': ['name', 'time', 'kropotkin_id'],
              'translation': 'Task %(name)s reported at %(time)s'},
             {'type': 'reward',
              'keys': ['name', 'time'],
