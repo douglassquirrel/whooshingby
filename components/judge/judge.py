@@ -7,14 +7,13 @@ from time import sleep
 get_oldest_opinion_and_stamp = make_query_function('opinion', True, 'oldest')
 get_all_opinions_and_stamp = make_query_function('opinion', True, 'all')
 
-def choose_randomly(percentages, default):
-    r = randrange(100)
+def choose(random_value, percentages, default=None):
     n = 0
-    for type_, percentage in percentages:
-        if r not in range(n, n + percentage):
-            n = n + percentage
+    for name, percentage in percentages:
+        if random_value in range(n, n + percentage):
+            return name
         else:
-            return type_
+            n = n + percentage
     return default
 
 while True:
@@ -32,7 +31,8 @@ while True:
 
     percentages = get_newest_fact('whooshingby',
                                   'judge_percentages', {})['percentages']
-    source = choose_randomly(percentages, default='python')
+    random_value = randrange(100)
+    source = choose(random_value, percentages, default='python')
 
     to_promote = next((o for o in opinions if o['source'] == source), None)
     if to_promote:

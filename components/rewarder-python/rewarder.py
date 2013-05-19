@@ -1,6 +1,15 @@
 #!/usr/bin/python
 from kropotkin import get_newest_fact, get_oldest_fact_and_stamp, store_opinion
 
+def choose(random_value, percentages, default=None):
+    n = 0
+    for name, percentage in percentages:
+        if random_value in range(n, n + percentage):
+            return name
+        else:
+            n = n + percentage
+    return default
+
 while True:
     fact = get_oldest_fact_and_stamp('whooshingby', 'completed-task',
                                      {}, 'rewarder_python')
@@ -11,14 +20,10 @@ while True:
                                          'reward_percentages',
                                          {})['percentages']
 
-    r = (hash(fact['name']) * 61 + fact['time'] * 47) % 100
-    n = 0
-    for name, percentage in reward_percentages:
-        if r not in range(n, n + percentage):
-            n = n + percentage
-            continue
+    random_value = (hash(fact['name']) * 61 + fact['time'] * 47) % 100
+    name = choose(random_value, reward_percentages)
+    if name:
         content = {'name': name, 'task_id': fact['kropotkin_id'],
                    'source': 'python'}
         if not store_opinion('whooshingby', 'reward', content):
             print "Could not store reward opinion" # handle better
-        break
