@@ -1,3 +1,1 @@
-[{"percentage": 30, "name": "hug"},
- {"percentage": 20, "name": "treat"},
- {"percentage": 10, "name": "nap"}]
+[["hug", 30], ["treat", 20], ["nap", 10]]

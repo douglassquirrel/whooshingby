@@ -8,19 +8,21 @@ while true
     next
   end
 
-  reward_percentages = get_all_facts('whooshingby',
-                                     'reward_percentage',
-                                     {})
+  reward_percentages = get_newest_fact('whooshingby',
+                                       'reward_percentages',
+                                       {})['percentages']
 
   r = (fact['name'].hash * 47 + fact['time'].hash * 61) % 100
   n = 0
-  for reward in reward_percentages
-    if !((n...n+reward['percentage']).include?(r))
-      n = n + reward['percentage']
+  for r in reward_percentages
+    name = r[0]
+    percentage = r[1]
+    if !((n...n+percentage).include?(r))
+      n = n + percentage
       next
     end
 
-    content = {'name' => reward['name'], 'task_id' => fact['kropotkin_id'], \
+    content = {'name' => name, 'task_id' => fact['kropotkin_id'], \
                'source' => 'ruby'}
     if !(store_opinion('whooshingby', 'reward', content))
       print "Could not store reward opinion"
