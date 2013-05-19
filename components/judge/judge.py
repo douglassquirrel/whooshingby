@@ -16,18 +16,29 @@ def choose(random_value, percentages, default=None):
             n = n + percentage
     return default
 
+def compare_opinions(opinions, expected_opinions):
+    if len(opinions) < expected_opinions:
+        return False
+    print opinions
+    names = set([opinion['name'] for opinion in opinions])
+    return len(names) == 1
+
 while True:
     opinion = get_oldest_opinion_and_stamp('whooshingby', 'reward',
                                            {}, 'judge')
     if not opinion:
         continue
 
-    sleep(1) # wait for all components to finish; could be much improved
+    sleep(1) # hacky way to wait for all components to finish
 
     task_id = opinion['task_id']
     opinions = [opinion] + \
         get_all_opinions_and_stamp('whooshingby', 'reward',
                                    {'task_id': task_id}, 'judge')
+    if not compare_opinions(opinions, 2):
+        if not store_fact('whooshingby', 'opinion_difference',
+                          {'opinions': opinions}):
+            print "Could not store opinion difference fact"
 
     percentages = get_newest_fact('whooshingby',
                                   'judge_percentages', {})['percentages']
@@ -37,4 +48,4 @@ while True:
     to_promote = next((o for o in opinions if o['source'] == source), None)
     if to_promote:
         if not store_fact('whooshingby', 'reward', to_promote):
-            print "Could not store fact"
+            print "Could not store reward fact"

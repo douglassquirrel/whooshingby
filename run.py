@@ -24,7 +24,10 @@ elements = [{'type': 'completed-task',
              'translation': 'Reward percentages set to %(percentages)s'},
             {'type': 'judge_percentages',
              'keys': ['percentages'],
-             'translation': 'Judge percentages set to %(percentages)s'}]
+             'translation': 'Judge percentages set to %(percentages)s'},
+            {'type': 'opinion_difference',
+             'keys': ['opinions'],
+             'translation': 'Opinions differ: %(opinions)s'}]
 
 for e in elements:
     if not store_fact('whooshingby', 'constitution_element', e):
