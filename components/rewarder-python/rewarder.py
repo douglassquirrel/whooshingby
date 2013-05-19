@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from kropotkin import get_all_facts, get_oldest_fact_and_stamp, store_fact
+from kropotkin import get_all_facts, get_oldest_fact_and_stamp, store_opinion
 
 while True:
     fact = get_oldest_fact_and_stamp('whooshingby', 'completed-task',
@@ -19,6 +19,6 @@ while True:
             continue
         content = {'name': reward['name'], 'task_id': fact['kropotkin_id'],
                    'source': 'python'}
-        if not store_fact('whooshingby', 'reward', content):
-            print "Could not store reward fact" # handle better
+        if not store_opinion('whooshingby', 'reward', content):
+            print "Could not store reward opinion" # handle better
         break
