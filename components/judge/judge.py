@@ -7,6 +7,16 @@ from time import sleep
 get_oldest_opinion_and_stamp = make_query_function('opinion', True, 'oldest')
 get_all_opinions_and_stamp = make_query_function('opinion', True, 'all')
 
+def choose_randomly(percentages, default):
+    r = randrange(100)
+    n = 0
+    for type_, percentage in percentages:
+        if r not in range(n, n + percentage):
+            n = n + percentage
+        else:
+            return type_
+    return default
+
 while True:
     opinion = get_oldest_opinion_and_stamp('whooshingby', 'reward',
                                            {}, 'judge')
@@ -22,17 +32,9 @@ while True:
 
     percentages = get_newest_fact('whooshingby',
                                   'judge_percentages', {})['percentages']
-    r = randrange(100)
-    n = 0
-    selected = 'python'
-    for type_, percentage in percentages:
-        if r not in range(n, n + percentage):
-            n = n + percentage
-        else:
-            selected = type_
-            break
+    source = choose_randomly(percentages, default='python')
 
-    to_promote = next((o for o in opinions if o['source'] == selected), None)
+    to_promote = next((o for o in opinions if o['source'] == source), None)
     if to_promote:
         if not store_fact('whooshingby', 'reward', to_promote):
             print "Could not store fact"
