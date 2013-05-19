@@ -19,7 +19,6 @@ def choose(random_value, percentages, default=None):
 def compare_opinions(opinions, expected_opinions):
     if len(opinions) < expected_opinions:
         return False
-    print opinions
     names = set([opinion['name'] for opinion in opinions])
     return len(names) == 1
 
