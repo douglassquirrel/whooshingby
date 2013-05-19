@@ -21,7 +21,10 @@ elements = [{'type': 'completed-task',
              'translation': 'Reward %(name)s for %(task_id)s by %(source)s'},
             {'type': 'reward_percentages',
              'keys': ['percentages'],
-             'translation': 'Current percentages set to %(percentages)s'}]
+             'translation': 'Reward percentages set to %(percentages)s'},
+            {'type': 'judge_percentages',
+             'keys': ['percentages'],
+             'translation': 'Judge percentages set to %(percentages)s'}]
 
 for e in elements:
     if not store_fact('whooshingby', 'constitution_element', e):
@@ -33,6 +36,11 @@ with open('rewards.json') as f:
     if not store_fact('whooshingby', 'reward_percentages',
                       {'percentages': rewards}):
         print "Could not store reward percentages"
+        exit(1)
+
+if not store_fact('whooshingby', 'judge_percentages',
+                  {'percentages': [['python', 100], ['ruby', 0]]}):
+        print "Could not store judge percentages"
         exit(1)
 
 for f in listdir('components'):

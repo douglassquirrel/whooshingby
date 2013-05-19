@@ -1,5 +1,6 @@
 #!/usr/bin/python
-from kropotkin import make_query_function, store_fact, store_opinion
+from kropotkin import get_newest_fact, make_query_function, \
+                      store_fact, store_opinion
 from random import randrange
 from time import sleep
 
@@ -19,7 +20,8 @@ while True:
         get_all_opinions_and_stamp('whooshingby', 'reward',
                                    {'task_id': task_id}, 'judge')
 
-    percentages = [('python', 100), ('ruby', 0)]
+    percentages = get_newest_fact('whooshingby',
+                                  'judge_percentages', {})['percentages']
     r = randrange(100)
     n = 0
     selected = 'python'

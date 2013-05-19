@@ -14,9 +14,9 @@ while true
 
   r = (fact['name'].hash * 47 + fact['time'].hash * 61) % 100
   n = 0
-  for r in reward_percentages
-    name = r[0]
-    percentage = r[1]
+  for p in reward_percentages
+    name = p[0]
+    percentage = p[1]
     if !((n...n+percentage).include?(r))
       n = n + percentage
       next
