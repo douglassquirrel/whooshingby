@@ -4,8 +4,8 @@ from kropotkin import get_newest_fact, make_query_function, \
 from random import randrange
 from time import sleep
 
-get_oldest_opinion_and_stamp = make_query_function('opinion', True, 'oldest')
-get_all_opinions_and_stamp = make_query_function('opinion', True, 'all')
+get_oldest_opinion_and_stamp = make_query_function('opinion', True, 'oldest', 1)
+get_all_opinions_and_stamp = make_query_function('opinion', True, 'all', None)
 
 def choose(random_value, percentages, default=None):
     n = 0
