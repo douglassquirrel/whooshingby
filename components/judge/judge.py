@@ -31,9 +31,9 @@ while True:
     sleep(1) # hacky way to wait for all components to finish
 
     task_id = opinion['task_id']
-    opinions = [opinion] + \
-        get_all_opinions_and_stamp('whooshingby', 'reward',
-                                   {'task_id': task_id}, 'judge')
+    opinions = get_all_opinions_and_stamp('whooshingby', 'reward',
+                                          {'task_id': task_id}, 'judge') or []
+    opinions.append(opinion)
     if not compare_opinions(opinions, 2):
         if not store_fact('whooshingby', 'opinion_difference',
                           {'opinions': opinions}):
@@ -46,5 +46,6 @@ while True:
 
     to_promote = next((o for o in opinions if o['source'] == source), None)
     if to_promote:
+        del to_promote['kropotkin_confidence']
         if not store_fact('whooshingby', 'reward', to_promote):
             print "Could not store reward fact"
