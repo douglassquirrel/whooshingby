@@ -3,15 +3,17 @@ from json import load
 from kropotkin import create_factspace, store_fact
 from os import environ, listdir
 from os.path import abspath, join
-from sys import exit
+from sys import exit, stderr
 
-if 'KROPOTKIN_URL' not in environ:
-    print "Must set environment variable KROPOTKIN_URL"
+def fail_and_exit(message):
+    stderr.write(message + '\n')
     exit(1)
 
+if 'KROPOTKIN_URL' not in environ:
+    fail_and_exit("Must set environment variable KROPOTKIN_URL")
+
 if not create_factspace('whooshingby'):
-    print "Failed to create whooshingby factspace"
-    exit(2)
+    fail_and_exit("Failed to create whooshingby factspace")
 
 elements = [{'type': 'completed-task',
              'keys': ['name', 'time', 'kropotkin_id'],
@@ -31,23 +33,19 @@ elements = [{'type': 'completed-task',
 
 for e in elements:
     if not store_fact('whooshingby', 'constitution_element', e):
-        print "Could not store constitution element fact"
-        exit(1)
+        fail_and_exit("Could not store constitution element fact")
 
 with open('rewards.json') as f:
     rewards = load(f)
     if not store_fact('whooshingby', 'reward_percentages',
                       {'percentages': rewards}):
-        print "Could not store reward percentages"
-        exit(1)
+        fail_and_exit("Could not store reward percentages")
 
 if not store_fact('whooshingby', 'judge_percentages',
                   {'percentages': [['python', 100], ['ruby', 0]]}):
-        print "Could not store judge percentages"
-        exit(1)
+        fail_and_exit("Could not store judge percentages")
 
 for f in listdir('components'):
     content = {'location': abspath(join('components', f))}
     if not store_fact('kropotkin', 'component_available', content):
-        print "Could not store component available fact"
-        exit(1)
+        fail_and_exit("Could not store component available fact")
