@@ -49,3 +49,6 @@ for f in listdir('components'):
     content = {'location': abspath(join('components', f))}
     if not store_fact('kropotkin', 'component_available', content):
         fail_and_exit("Could not store component available fact")
+
+home_url = '/'.join([environ['KROPOTKIN_URL'], 'component', 'home.html'])
+print "Whooshingby available on %s" % home_url
