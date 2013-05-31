@@ -11,7 +11,7 @@ def choose(random_value, percentages, default=None):
     return default
 
 while True:
-    fact = get_oldest_fact_and_stamp('whooshingby', 'completed-task',
+    fact = get_oldest_fact_and_stamp('whooshingby', 'completed_task',
                                      {}, 'rewarder_python')
     if not fact:
         continue

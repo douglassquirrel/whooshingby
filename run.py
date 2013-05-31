@@ -15,7 +15,7 @@ if 'KROPOTKIN_URL' not in environ:
 if not create_factspace('whooshingby'):
     fail_and_exit("Failed to create whooshingby factspace")
 
-elements = [{'type': 'completed-task',
+elements = [{'type': 'completed_task',
              'keys': ['name', 'time', 'kropotkin_id'],
              'translation': 'Task %(name)s reported at %(time)s'},
             {'type': 'reward',

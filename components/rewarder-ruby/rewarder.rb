@@ -16,7 +16,7 @@ def choose(random_value, percentages, default=nil)
 end
 
 while true
-  fact = get_oldest_fact_and_stamp('whooshingby', 'completed-task',
+  fact = get_oldest_fact_and_stamp('whooshingby', 'completed_task',
                                    {}, 'rewarder_ruby')
   if !fact
     next
