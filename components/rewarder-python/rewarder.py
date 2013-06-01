@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from json import loads
 from kropotkin import get_newest_fact, get_oldest_fact_and_stamp, store_opinion
 
 def choose(random_value, percentages, default=None):
@@ -16,9 +17,8 @@ while True:
     if not fact:
         continue
 
-    reward_percentages = get_newest_fact('whooshingby',
-                                         'reward_percentages',
-                                         {})['percentages']
+    percentages_fact = get_newest_fact('whooshingby', 'reward_percentages', {})
+    reward_percentages = loads(percentages_fact['percentages'])
 
     random_value = (hash(fact['name']) * 61 + fact['time'] * 47) % 100
     name = choose(random_value, reward_percentages)

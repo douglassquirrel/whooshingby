@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from json import load
+from json import load, dumps
 from kropotkin import create_factspace, store_fact
 from os import environ, listdir
 from os.path import abspath, join
@@ -16,19 +16,19 @@ if not create_factspace('whooshingby'):
     fail_and_exit("Failed to create whooshingby factspace")
 
 elements = [{'type': 'completed_task',
-             'keys': ['name', 'time', 'kropotkin_id'],
+             'keys': dumps(['name', 'time', 'kropotkin_id']),
              'translation': 'Task %(name)s reported at %(time)s'},
             {'type': 'reward',
-             'keys': ['name', 'task_id', 'source'],
+             'keys': dumps(['name', 'task_id', 'source']),
              'translation': 'Reward %(name)s for %(task_id)s by %(source)s'},
             {'type': 'reward_percentages',
-             'keys': ['percentages'],
+             'keys': dumps(['percentages']),
              'translation': 'Reward percentages set to %(percentages)s'},
             {'type': 'judge_percentages',
-             'keys': ['percentages'],
+             'keys': dumps(['percentages']),
              'translation': 'Judge percentages set to %(percentages)s'},
             {'type': 'opinion_difference',
-             'keys': ['opinions'],
+             'keys': dumps(['opinions']),
              'translation': 'Opinions differ: %(opinions)s'}]
 
 for e in elements:
@@ -36,13 +36,13 @@ for e in elements:
         fail_and_exit("Could not store constitution element fact")
 
 with open('rewards.json') as f:
-    rewards = load(f)
+    rewards = f.read()
     if not store_fact('whooshingby', 'reward_percentages',
                       {'percentages': rewards}):
         fail_and_exit("Could not store reward percentages")
 
 if not store_fact('whooshingby', 'judge_percentages',
-                  {'percentages': [['python', 100], ['ruby', 0]]}):
+                  {'percentages': '[["python", 100], ["ruby", 0]]'}):
         fail_and_exit("Could not store judge percentages")
 
 for f in listdir('components'):

@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from json import loads, dumps
 from kropotkin import get_newest_fact, make_query_function, \
                       store_fact, store_opinion
 from random import randrange
@@ -36,11 +37,11 @@ while True:
     opinions.append(opinion)
     if not compare_opinions(opinions, 2):
         if not store_fact('whooshingby', 'opinion_difference',
-                          {'opinions': opinions}):
+                          {'opinions': dumps(opinions)}):
             print "Could not store opinion difference fact"
 
-    percentages = get_newest_fact('whooshingby',
-                                  'judge_percentages', {})['percentages']
+    percentages_fact = get_newest_fact('whooshingby', 'judge_percentages', {})
+    percentages = loads(percentages_fact['percentages'])
     random_value = randrange(100)
     source = choose(random_value, percentages, default='python')
 

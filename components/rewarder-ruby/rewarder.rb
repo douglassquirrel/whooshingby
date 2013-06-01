@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 require 'kropotkin'
+require 'json'
 
 def choose(random_value, percentages, default=nil)
   n = 0
@@ -22,9 +23,8 @@ while true
     next
   end
 
-  reward_percentages = get_newest_fact('whooshingby',
-                                       'reward_percentages',
-                                       {})['percentages']
+  percentages_fact = get_newest_fact('whooshingby', 'reward_percentages', {})
+  reward_percentages = JSON.parse(percentages_fact['percentages'])
 
   random_value = (fact['name'].hash * 47 + fact['time'].hash * 61) % 100
   name = choose(random_value, reward_percentages)
