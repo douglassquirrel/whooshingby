@@ -47,6 +47,8 @@ while True:
 
     to_promote = next((o for o in opinions if o['source'] == source), None)
     if to_promote:
-        del to_promote['kropotkin_confidence']
+        for key in to_promote.keys():
+            if key.startswith('kropotkin_'):
+                del to_promote[key]
         if not store_fact('whooshingby', 'reward', to_promote):
             print "Could not store reward fact"

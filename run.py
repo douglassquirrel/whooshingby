@@ -16,7 +16,7 @@ if not create_factspace('whooshingby'):
     fail_and_exit("Failed to create whooshingby factspace")
 
 elements = [{'type': 'completed_task',
-             'keys': dumps(['name', 'time', 'kropotkin_id']),
+             'keys': dumps(['name', 'time']),
              'translation': 'Task %(name)s reported at %(time)s'},
             {'type': 'reward',
              'keys': dumps(['name', 'task_id', 'source']),
