@@ -4,3 +4,5 @@ function completed_task() {
     var content = {'name': name, 'time': time};
     store_fact('whooshingby', 'completed_task', content);
 }
+
+report_deployment('completed_task.js');

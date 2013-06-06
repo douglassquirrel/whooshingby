@@ -52,3 +52,4 @@ function display_reward(reward) {
 }
 
 setInterval(check_tasks, 1000);
+report_deployment('display_tasks.js');

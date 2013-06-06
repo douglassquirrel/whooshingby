@@ -25,3 +25,4 @@ function display_reward(fact)
 }
 
 setInterval(check_reward, 1000);
+report_deployment('display_reward.js');
