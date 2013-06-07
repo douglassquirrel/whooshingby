@@ -18,7 +18,7 @@ function check_tasks() {
     stamp = 'display_tasks_'
         + kropotkin_components['display_tasks.js']['kropotkin_id'];
     get_newest_n_facts_stamp('whooshingby', 'completed_task', {}, 10, stamp,
-                            display_tasks);
+                             display_tasks);
 }
 
 function display_tasks(tasks) {
@@ -27,7 +27,7 @@ function display_tasks(tasks) {
         for (var i=9; i>=tasks.length; i--) {
             from = tasks_table.rows[i-tasks.length]
             to = tasks_table.rows[i];
-            for (j=0; j<3; j++) {
+            for (j=0; j<5; j++) {
                 to.cells[j].innerHTML = from.cells[j].innerHTML;
             }
         }
@@ -36,21 +36,11 @@ function display_tasks(tasks) {
             row.cells[0].innerHTML = tasks[i]['kropotkin_id'];
             row.cells[1].innerHTML = tasks[i]['name'];
             row.cells[2].innerHTML = timestamp_to_string(tasks[i]['time']);
+            row.cells[3].innerHTML = '';
+            row.cells[4].innerHTML = '';
         }
     }
     setTimeout(check_tasks, 1000);
-}
-
-function display_reward(reward) {
-    console.log(reward);
-    var tasks_table = document.querySelectorAll('*[data-tasks]')[0];
-    for (i=0; i<10; i++) {
-        row = tasks_table.rows[i];
-        current_id = row.cells[0].innerHTML;
-        if (current_id == reward['task_id']) {
-            row.cells[3].innerHTML = reward['name'];
-        }
-    }
 }
 
 setTimeout(check_tasks, 1000);
