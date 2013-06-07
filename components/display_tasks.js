@@ -1,10 +1,11 @@
-function get_newest_n_statements(factspace, type, criteria, n, onresponse) {
-    criteria['kropotkin_criteria'] = 'result-newest,number-' + n;
+function get_newest_n_facts_stamp(factspace, type, criteria, n, stamp, onresp) {
+    kropotkin_criteria = 'result-newest,number-' + n + ',stamp-' + stamp;
+    criteria['kropotkin_criteria'] = kropotkin_criteria;
     var query_string = to_query_string(criteria);
-    url = '/factspace/' + factspace + '/statement/' + type
+    url = '/factspace/' + factspace + '/fact/' + type
         + '?' + to_query_string(criteria);
     http_request(url, 'GET', null, function(responseText) {
-        onresponse(JSON.parse(responseText));
+        onresp(JSON.parse(responseText));
     });
 }
 
@@ -14,29 +15,30 @@ function timestamp_to_string(timestamp) {
 }
 
 function check_tasks() {
-    get_newest_n_statements('whooshingby', 'completed_task', {}, 10,
+    stamp = 'display_tasks_'
+        + kropotkin_components['display_tasks.js']['kropotkin_id'];
+    get_newest_n_facts_stamp('whooshingby', 'completed_task', {}, 10, stamp,
                             display_tasks);
 }
 
 function display_tasks(tasks) {
-    var tasks_table = document.querySelectorAll('*[data-tasks]')[0];
-    for (i=0; i<10; i++) {
-        var row_data = [];
-        if (i < tasks.length) {
-            row_data.push(tasks[i]['kropotkin_id']);
-            row_data.push(tasks[i]['name']);
-            row_data.push(timestamp_to_string(tasks[i]['time']));
-            criteria = {'task_id': tasks[i]['kropotkin_id']};
-            console.log(criteria);
-            get_newest_fact('whooshingby', 'reward', criteria, display_reward);
-        } else {
-            row_data = ['', '', '']
+    if (tasks.length != 0) {
+        var tasks_table = document.querySelectorAll('*[data-tasks]')[0];
+        for (var i=9; i>=tasks.length; i--) {
+            from = tasks_table.rows[i-tasks.length]
+            to = tasks_table.rows[i];
+            for (j=0; j<3; j++) {
+                to.cells[j].innerHTML = from.cells[j].innerHTML;
+            }
         }
-        row = tasks_table.rows[i];
-        for (j=0; j<3; j++) {
-            row.cells[j].innerHTML = row_data[j];
+        for (var i=0; i<tasks.length; i++) {
+            row = tasks_table.rows[i];
+            row.cells[0].innerHTML = tasks[i]['kropotkin_id'];
+            row.cells[1].innerHTML = tasks[i]['name'];
+            row.cells[2].innerHTML = timestamp_to_string(tasks[i]['time']);
         }
     }
+    setTimeout(check_tasks, 1000);
 }
 
 function display_reward(reward) {
@@ -51,5 +53,5 @@ function display_reward(reward) {
     }
 }
 
-setInterval(check_tasks, 1000);
+setTimeout(check_tasks, 1000);
 report_deployment('display_tasks.js');
