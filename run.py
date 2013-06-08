@@ -12,7 +12,7 @@ def fail_and_exit(message):
 if 'KROPOTKIN_URL' not in environ:
     fail_and_exit("Must set environment variable KROPOTKIN_URL")
 
-if not create_factspace('whooshingby'):
+if not create_factspace('whooshingby', environ.get('WHOOSHINGBY_HOME', None)):
     fail_and_exit("Failed to create whooshingby factspace")
 
 elements = [{'type': 'completed_task',
