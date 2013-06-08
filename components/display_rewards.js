@@ -15,7 +15,7 @@ function timestamp_to_string(timestamp) {
 }
 
 function check_rewards() {
-    stamp = 'display_tasks_'
+    stamp = 'display_rewards_'
         + kropotkin_components['display_tasks.js']['kropotkin_id'];
     get_newest_n_facts_stamp('whooshingby', 'reward', {}, 10, stamp,
                              display_rewards);
