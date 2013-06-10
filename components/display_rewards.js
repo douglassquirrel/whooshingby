@@ -16,7 +16,8 @@ function timestamp_to_string(timestamp) {
 
 function check_rewards() {
     stamp = 'display_rewards_'
-        + kropotkin_components['display_tasks.js']['kropotkin_id'];
+        + kropotkin_components['display_tasks.js']['kropotkin_id']
+        + '_' + display_rewards_start_id;
     get_newest_n_facts_stamp('whooshingby', 'reward', {}, 10, stamp,
                              display_rewards);
 }
@@ -39,5 +40,12 @@ function display_rewards(rewards) {
     setTimeout(check_rewards, 1000);
 }
 
-setTimeout(check_rewards, 1000);
+function initialise(fact) {
+    var latest_reward_id = 0;
+    if (fact != null) { latest_reward_id = fact['kropotkin_id']; }
+    window.display_rewards_start_id = latest_reward_id;
+    setTimeout(check_rewards, 1000);
+}
+
+get_newest_fact('whooshingby', 'reward', {}, initialise);
 report_deployment('display_rewards.js');

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from json import load, dumps
-from kropotkin import create_factspace, store_fact
+from kropotkin import create_factspace, get_newest_fact, store_fact
 from os import environ, listdir
 from os.path import abspath, join
 from sys import exit, stderr
@@ -35,14 +35,18 @@ for e in elements:
     if not store_fact('whooshingby', 'constitution_element', e):
         fail_and_exit("Could not store constitution element fact")
 
-with open('rewards.json') as f:
-    rewards = f.read()
-    if not store_fact('whooshingby', 'reward_percentages',
-                      {'percentages': rewards}):
-        fail_and_exit("Could not store reward percentages")
+reward_percentages = get_newest_fact('whooshingby', 'reward_percentages', {})
+if not reward_percentages:
+    with open('rewards.json') as f:
+        reward_percentages = f.read()
+        if not store_fact('whooshingby', 'reward_percentages',
+                          {'percentages': reward_percentages}):
+            fail_and_exit("Could not store reward percentages")
 
-if not store_fact('whooshingby', 'judge_percentages',
-                  {'percentages': '[["python", 100], ["ruby", 0]]'}):
+judge_percentages = get_newest_fact('whooshingby', 'judge_percentages', {})
+if not judge_percentages:
+    if not store_fact('whooshingby', 'judge_percentages',
+                      {'percentages': '[["python", 100], ["ruby", 0]]'}):
         fail_and_exit("Could not store judge percentages")
 
 for f in listdir('components'):

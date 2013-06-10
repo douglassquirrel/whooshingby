@@ -16,7 +16,8 @@ function timestamp_to_string(timestamp) {
 
 function check_tasks() {
     stamp = 'display_tasks_'
-        + kropotkin_components['display_tasks.js']['kropotkin_id'];
+        + kropotkin_components['display_tasks.js']['kropotkin_id']
+        + '_' + display_tasks_start_id;
     get_newest_n_facts_stamp('whooshingby', 'completed_task', {}, 10, stamp,
                              display_tasks);
 }
@@ -43,5 +44,12 @@ function display_tasks(tasks) {
     setTimeout(check_tasks, 1000);
 }
 
-setTimeout(check_tasks, 1000);
+function initialise(fact) {
+    var latest_task_id = 0;
+    if (fact != null) { latest_task_id = fact['kropotkin_id']; }
+    window.display_tasks_start_id = latest_task_id;
+    setTimeout(check_tasks, 1000);
+}
+
+get_newest_fact('whooshingby', 'completed_task', {}, initialise);
 report_deployment('display_tasks.js');
