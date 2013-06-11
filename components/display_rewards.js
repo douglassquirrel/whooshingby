@@ -31,8 +31,9 @@ function display_rewards(rewards) {
                 row = tasks_table.rows[j];
                 current_id = row.cells[0].innerHTML;
                 if (current_id == reward['task_id']) {
+                    time = timestamp_to_string(reward['kropotkin_timestamp']);
                     row.cells[3].innerHTML = reward['name'];
-                    row.cells[4].innerHTML = reward['kropotkin_timestamp'];
+                    row.cells[4].innerHTML = time;
                 }
             }
         }
