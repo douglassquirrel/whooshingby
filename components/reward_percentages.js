@@ -1,3 +1,5 @@
+window.percentagesChanged = false;
+
 function create_controls(percentages_fact) {
     var percentages = [];
     if (null != percentages_fact) {
@@ -9,6 +11,7 @@ function create_controls(percentages_fact) {
         var value = percentages[i][1];
         html += '<label>' +  name + ' '
               + '<input data-percentage-input '
+              + '       onchange="window.percentagesChanged=true;" '
               + '       type="range" min="0" max="100" '
               + '       name="' + name + '" '
               + '       value="' + value + '"/>'
@@ -19,8 +22,10 @@ function create_controls(percentages_fact) {
 }
 
 function save_percentages() {
+    if (window.percentagesChanged == false) { return; }
+    window.percentagesChanged = false;
     var inputs = document.querySelectorAll('*[data-percentage-input]');
-    var percentages = []
+    var percentages = [];
     for (var i=0; i<inputs.length; i++) {
         percentages.push([inputs[i].name, parseInt(inputs[i].value)]);
     }
@@ -29,4 +34,5 @@ function save_percentages() {
 }
 
 get_newest_fact('whooshingby', 'reward_percentages', {}, create_controls);
+setInterval(save_percentages, 1000);
 report_deployment('display_rewards.js');
