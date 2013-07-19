@@ -29,7 +29,7 @@ while true
   random_value = (fact['name'].hash * 47 + fact['time'].hash * 61) % 100
   name = choose(random_value, reward_percentages)
   if name
-    content = {'name' => name, 'task_id' => fact['kropotkin_id'], \
+    content = {'name' => name, 'task_id' => fact['task_id'], \
                'source' => 'ruby'}
     if !(store_opinion('whooshingby', 'reward', content))
       print "Could not store reward opinion"

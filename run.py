@@ -16,7 +16,7 @@ if not create_factspace('whooshingby', environ.get('WHOOSHINGBY_HOME', None)):
     fail_and_exit("Failed to create whooshingby factspace")
 
 elements = [{'type': 'completed_task',
-             'keys': dumps(['name', 'time']),
+             'keys': dumps(['name', 'time', 'task_id']),
              'translation': 'Task %(name)s reported at %(time)s'},
             {'type': 'reward',
              'keys': dumps(['name', 'task_id', 'source']),
@@ -29,7 +29,11 @@ elements = [{'type': 'completed_task',
              'translation': 'Judge percentages set to %(percentages)s'},
             {'type': 'opinion_difference',
              'keys': dumps(['opinions']),
-             'translation': 'Opinions differ: %(opinions)s'}]
+             'translation': 'Opinions differ: %(opinions)s'},
+            {'type': 'subscription',
+             'keys': dumps(['type', 'confidence', 'queue']),
+             'translation': 'Subscription to %(confidence)ss ' \
+                          + 'of type %(type)s using queue %(queue)s'}]
 
 for e in elements:
     if not store_fact('whooshingby', 'constitution_element', e):
