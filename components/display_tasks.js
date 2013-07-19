@@ -1,11 +1,11 @@
-function get_newest_n_facts_stamp(factspace, type, criteria, n, stamp, onresp) {
-    kropotkin_criteria = 'result-newest,number-' + n + ',stamp-' + stamp;
+function get_newest_n_facts(factspace, type, criteria, n, onresponse) {
+    kropotkin_criteria = 'result-newest,number-' + n;
     criteria['kropotkin_criteria'] = kropotkin_criteria;
     var query_string = to_query_string(criteria);
     url = '/factspace/' + factspace + '/fact/' + type
         + '?' + to_query_string(criteria);
     http_request(url, 'GET', null, function(responseText) {
-        onresp(JSON.parse(responseText));
+        onresponse(JSON.parse(responseText));
     });
 }
 
@@ -14,42 +14,42 @@ function timestamp_to_string(timestamp) {
     return date.toString();
 }
 
-function check_tasks() {
-    stamp = 'display_tasks_'
-        + kropotkin_components['display_tasks.js']['kropotkin_id']
-        + '_' + display_tasks_start_id;
-    get_newest_n_facts_stamp('whooshingby', 'completed_task', {}, 10, stamp,
-                             display_tasks);
+function fill_row(row, task) {
+    row.cells[0].innerHTML = task['task_id'];
+    row.cells[1].innerHTML = task['name'];
+    row.cells[2].innerHTML = timestamp_to_string(task['time']);
+    row.cells[3].innerHTML = '';
+    row.cells[4].innerHTML = '';
 }
 
-function display_tasks(tasks) {
-    if (tasks.length != 0) {
-        var tasks_table = document.querySelectorAll('*[data-tasks]')[0];
-        for (var i=9; i>=tasks.length; i--) {
-            from = tasks_table.rows[i-tasks.length]
-            to = tasks_table.rows[i];
-            for (j=0; j<5; j++) {
-                to.cells[j].innerHTML = from.cells[j].innerHTML;
-            }
-        }
-        for (var i=0; i<tasks.length; i++) {
-            row = tasks_table.rows[i];
-            row.cells[0].innerHTML = tasks[i]['kropotkin_id'];
-            row.cells[1].innerHTML = tasks[i]['name'];
-            row.cells[2].innerHTML = timestamp_to_string(tasks[i]['time']);
-            row.cells[3].innerHTML = '';
-            row.cells[4].innerHTML = '';
+function check_task() {
+    get_next_fact('whooshingby', 'completed_task', display_task);
+}
+
+function display_task(task) {
+    var tasks_table = document.querySelectorAll('*[data-tasks]')[0];
+
+    for (var i=9; i>0; i--) {
+        from = tasks_table.rows[i-1]
+        to = tasks_table.rows[i];
+        for (j=0; j<5; j++) {
+            to.cells[j].innerHTML = from.cells[j].innerHTML;
         }
     }
-    setTimeout(check_tasks, 1000);
+    fill_row(tasks_table.rows[0], task);
+
+    setTimeout(check_task, 1000);
 }
 
-function initialise(fact) {
-    var latest_task_id = 0;
-    if (fact != null) { latest_task_id = fact['kropotkin_id']; }
-    window.display_tasks_start_id = latest_task_id;
-    setTimeout(check_tasks, 1000);
+function initialise(tasks) {
+    var tasks_table = document.querySelectorAll('*[data-tasks]')[0];
+    var rows = tasks_table.rows;
+    for (var i=0; i<tasks.length; i++) {
+        fill_row(rows[i], tasks[i]);
+    }
+    setTimeout(check_task, 1000);
 }
 
-get_newest_fact('whooshingby', 'completed_task', {}, initialise);
+subscribe('whooshingby', 'fact', 'completed_task');
+get_newest_n_facts('whooshingby', 'completed_task', {}, 10, initialise);
 report_deployment('display_tasks.js');
