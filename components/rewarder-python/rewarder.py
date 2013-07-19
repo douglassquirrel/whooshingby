@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from json import loads
-from kropotkin import get_newest_fact, get_oldest_fact_and_stamp, store_opinion
+from kropotkin import get_newest_fact, get_next_fact, store_opinion, subscribe
 
 def choose(random_value, percentages, default=None):
     n = 0
@@ -11,9 +11,9 @@ def choose(random_value, percentages, default=None):
             n = n + percentage
     return default
 
+subscribe('whooshingby', 'fact', 'completed_task')
 while True:
-    fact = get_oldest_fact_and_stamp('whooshingby', 'completed_task',
-                                     {}, 'rewarder_python')
+    fact = get_next_fact('whooshingby', 'completed_task')
     if not fact:
         continue
 
