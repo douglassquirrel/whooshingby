@@ -1,8 +1,8 @@
 function get_newest_n_facts(factspace, type, criteria, n, onresponse) {
-    kropotkin_criteria = 'result-newest,number-' + n;
+    var kropotkin_criteria = 'result-newest,number-' + n;
     criteria['kropotkin_criteria'] = kropotkin_criteria;
     var query_string = to_query_string(criteria);
-    url = '/factspace/' + factspace + '/fact/' + type
+    var url = '/factspace/' + factspace + '/fact/' + type
         + '?' + to_query_string(criteria);
     http_request(url, 'GET', null, function(responseText) {
         onresponse(JSON.parse(responseText));
@@ -10,7 +10,7 @@ function get_newest_n_facts(factspace, type, criteria, n, onresponse) {
 }
 
 function timestamp_to_string(timestamp) {
-    date = new Date(timestamp * 1000);
+    var date = new Date(timestamp * 1000);
     return date.toString();
 }
 
@@ -30,8 +30,8 @@ function display_task(task) {
     var tasks_table = document.querySelectorAll('*[data-tasks]')[0];
 
     for (var i=9; i>0; i--) {
-        from = tasks_table.rows[i-1]
-        to = tasks_table.rows[i];
+        var from = tasks_table.rows[i-1]
+        var to = tasks_table.rows[i];
         for (j=0; j<5; j++) {
             to.cells[j].innerHTML = from.cells[j].innerHTML;
         }
