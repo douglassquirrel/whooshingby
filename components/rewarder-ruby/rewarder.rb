@@ -30,7 +30,7 @@ while true
   name = choose(random_value, reward_percentages)
   if name
     content = {'name' => name, 'task_id' => fact['task_id'], \
-               'source' => 'ruby'}
+               'source' => 'ruby', 'time' => Time.now.to_i}
     if !(store_opinion('whooshingby', 'reward', content))
       print "Could not store reward opinion"
     end

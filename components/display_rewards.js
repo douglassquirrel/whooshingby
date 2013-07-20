@@ -13,9 +13,8 @@ function display_reward(reward) {
         var row = tasks_table.rows[j];
         var current_id = row.cells[0].innerHTML;
         if (current_id == reward['task_id']) {
-            var time = timestamp_to_string(reward['kropotkin_timestamp']);
             row.cells[3].innerHTML = reward['name'];
-            row.cells[4].innerHTML = time;
+            row.cells[4].innerHTML = timestamp_to_string(reward['time']);
         }
     }
     setTimeout(check_reward, 1000);
