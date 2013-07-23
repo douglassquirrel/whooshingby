@@ -1,12 +1,8 @@
 #!/usr/bin/python
 from json import loads, dumps
-from kropotkin import get_newest_fact, make_query_function, \
-                      store_fact, store_opinion
+from kropotkin import get_newest_fact, get_next_set, store_fact, subscribe_sets
 from random import randrange
 from time import sleep
-
-get_oldest_opinion_and_stamp = make_query_function('opinion', True, 'oldest', 1)
-get_all_opinions_and_stamp = make_query_function('opinion', True, 'all', None)
 
 def choose(random_value, percentages, default=None):
     n = 0
@@ -23,18 +19,13 @@ def compare_opinions(opinions, expected_opinions):
     names = set([opinion['name'] for opinion in opinions])
     return len(names) == 1
 
+def classify_opinion(opinion):
+    return opinion['task_id']
+
+subscribe_sets('whooshingby', 'opinion', 'reward', classify_opinion, 2, 1)
 while True:
-    opinion = get_oldest_opinion_and_stamp('whooshingby', 'reward',
-                                           {}, 'judge')
-    if not opinion:
-        continue
+    opinions = get_next_set('whooshingby', 'opinion', 'reward')
 
-    sleep(1) # hacky way to wait for all components to finish
-
-    task_id = opinion['task_id']
-    opinions = get_all_opinions_and_stamp('whooshingby', 'reward',
-                                          {'task_id': task_id}, 'judge') or []
-    opinions.append(opinion)
     if not compare_opinions(opinions, 2):
         if not store_fact('whooshingby', 'opinion_difference',
                           {'opinions': dumps(opinions)}):
