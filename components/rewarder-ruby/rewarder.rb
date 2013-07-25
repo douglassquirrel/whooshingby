@@ -16,12 +16,9 @@ def choose(random_value, percentages, default=nil)
   return default
 end
 
+subscribe('whooshingby', 'fact', 'completed_task')
 while true
-  fact = get_oldest_fact_and_stamp('whooshingby', 'completed_task',
-                                   {}, 'rewarder_ruby')
-  if !fact
-    next
-  end
+  fact = get_next_statement('whooshingby', 'fact', 'completed_task')
 
   percentages_fact = get_newest_fact('whooshingby', 'reward_percentages', {})
   reward_percentages = JSON.parse(percentages_fact['percentages'])
