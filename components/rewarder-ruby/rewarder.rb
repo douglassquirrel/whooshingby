@@ -1,6 +1,9 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 require 'kropotkin'
 require 'json'
+
+STDOUT.sync = true
+STDERR.sync = true
 
 def choose(random_value, percentages, default=nil)
   n = 0
@@ -16,11 +19,13 @@ def choose(random_value, percentages, default=nil)
   return default
 end
 
-subscribe('whooshingby', 'fact', 'completed_task')
+Kropotkin.subscribe('whooshingby', 'fact', 'completed_task')
 while true
-  fact = get_next_statement('whooshingby', 'fact', 'completed_task')
+  fact = Kropotkin.get_next_statement('whooshingby', 'fact', 'completed_task')
 
-  percentages_fact = get_newest_fact('whooshingby', 'reward_percentages', {})
+  percentages_fact = Kropotkin.get_newest_fact('whooshingby',
+                                               'reward_percentages',
+                                               {})
   reward_percentages = JSON.parse(percentages_fact['percentages'])
 
   random_value = (fact['name'].hash * 47 + fact['time'].hash * 61) % 100
@@ -28,7 +33,7 @@ while true
   if name
     content = {'name' => name, 'task_id' => fact['task_id'], \
                'source' => 'ruby', 'time' => Time.now.to_i}
-    if !(store_opinion('whooshingby', 'reward', content))
+    if !(Kropotkin.store_opinion('whooshingby', 'reward', content))
       print "Could not store reward opinion"
     end
   end
