@@ -17,23 +17,29 @@ if not create_factspace('whooshingby', environ.get('WHOOSHINGBY_HOME', None)):
 
 elements = [{'type': 'completed_task',
              'keys': dumps(['name', 'time', 'task_id']),
-             'translation': 'Task %(name)s reported at %(time)s'},
+             'translation': 'Task %(name)s reported at %(time)s',
+             'options': ''},
             {'type': 'reward',
              'keys': dumps(['name', 'task_id', 'source', 'time']),
-             'translation': 'Reward %(name)s for %(task_id)s by %(source)s'},
+             'translation': 'Reward %(name)s for %(task_id)s by %(source)s',
+             'options': ''},
             {'type': 'reward_percentages',
              'keys': dumps(['percentages']),
-             'translation': 'Reward percentages set to %(percentages)s'},
+             'translation': 'Reward percentages set to %(percentages)s',
+             'options': ''},
             {'type': 'judge_percentages',
              'keys': dumps(['percentages']),
-             'translation': 'Judge percentages set to %(percentages)s'},
+             'translation': 'Judge percentages set to %(percentages)s',
+             'options': ''},
             {'type': 'opinion_difference',
              'keys': dumps(['opinions']),
-             'translation': 'Opinions differ: %(opinions)s'},
+             'translation': 'Opinions differ: %(opinions)s',
+             'options': ''},
             {'type': 'subscription',
              'keys': dumps(['type', 'confidence', 'queue']),
              'translation': 'Subscription to %(confidence)ss ' \
-                          + 'of type %(type)s using queue %(queue)s'}]
+                          + 'of type %(type)s using queue %(queue)s',
+             'options': ''}]
 
 for e in elements:
     if not store_fact('whooshingby', 'constitution_element', e):
