@@ -64,5 +64,7 @@ for f in listdir('components'):
     if not store_fact('kropotkin', 'component_available', content):
         fail_and_exit("Could not store component available fact")
 
-home_url = '/'.join([environ['KROPOTKIN_URL'], 'component', 'home.html'])
-print "Whooshingby available on %s" % home_url
+if not store_fact('kropotkin', 'home_component', {'name': 'home.html'}):
+    fail_and_exit('Could not store home_component fact')
+
+print "Whooshingby available on %s" % environ['KROPOTKIN_URL']
