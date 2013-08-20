@@ -39,6 +39,19 @@ elements = [{'type': 'completed_task',
              'keys': dumps(['type', 'confidence', 'queue']),
              'translation': 'Subscription to %(confidence)ss ' \
                           + 'of type %(type)s using queue %(queue)s',
+             'options': ''},
+            {'type': 'registration_request',
+             'keys': dumps(['name', 'password']),
+             'translation': 'User %(name)s requested registration',
+             'options': 'memory_only'},
+            {'type': 'user',
+              'keys': dumps(['name', 'salt', 'hash']),
+              'translation': 'User %(name)s is registered',
+              'options': ''},
+            {'type': 'user_nonce',
+             'keys': dumps(['name', 'nonce', 'expiry']),
+             'translation': 'User %(name)s can be identified by %(nonce)s' \
+                          + 'until %(expiry)s',
              'options': ''}]
 
 for e in elements:
